@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gotify
+  name: gotify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: gotify
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/gotify-default: "true"
+        io.kompose.service: gotify
+    spec:
+      containers:
+        - env:
+            - name: GOTIFY_DEFAULTUSER_PASS
+              value: custom
+          image: gotify/server
+          name: gotify
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/data
+              name: gotify-claim0
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      volumes:
+        - name: gotify-claim0
+          persistentVolumeClaim:
+            claimName: gotify-claim0
+status: {}
