@@ -4,6 +4,7 @@ metadata:
   annotations:
     kompose.cmd: ./kompose convert -f ./docker-compose.yaml
     kompose.version: 1.28.0 (c4137012e)
+    linkerd.io/inject: enabled
   creationTimestamp: null
   labels:
     io.kompose.service: prowlarr
