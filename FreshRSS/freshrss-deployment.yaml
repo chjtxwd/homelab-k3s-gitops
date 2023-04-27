@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yml
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: freshrss
+  name: freshrss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: freshrss
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yml
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/freshrss-default: "true"
+        io.kompose.service: freshrss
+    spec:
+      containers:
+        - env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          image: lscr.io/linuxserver/freshrss:latest
+          name: freshrss
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /config
+              name: freshrss-claim0
+      restartPolicy: Always
+      volumes:
+        - name: freshrss-claim0
+          persistentVolumeClaim:
+            claimName: freshrss-claim0
+status: {}
