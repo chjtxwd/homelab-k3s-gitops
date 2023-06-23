@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ../../kompose convert
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wallabag
+  name: wallabag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wallabag
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ../../kompose convert
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/wallabag-default: "true"
+        io.kompose.service: wallabag
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: wallaroot
+            - name: SYMFONY__ENV__DATABASE_CHARSET
+              value: utf8mb4
+            - name: SYMFONY__ENV__DATABASE_DRIVER
+              value: pdo_mysql
+            - name: SYMFONY__ENV__DATABASE_HOST
+              value: db
+            - name: SYMFONY__ENV__DATABASE_NAME
+              value: wallabag
+            - name: SYMFONY__ENV__DATABASE_PASSWORD
+              value: wallapass
+            - name: SYMFONY__ENV__DATABASE_PORT
+              value: "3306"
+            - name: SYMFONY__ENV__DATABASE_TABLE_PREFIX
+              value: '"wallabag_"'
+            - name: SYMFONY__ENV__DATABASE_USER
+              value: wallabag
+            - name: SYMFONY__ENV__DOMAIN_NAME
+              value: https://your-wallabag-instance.wallabag.org
+            - name: SYMFONY__ENV__FROM_EMAIL
+              value: wallabag@example.com
+            - name: SYMFONY__ENV__MAILER_DSN
+              value: smtp://127.0.0.1
+            - name: SYMFONY__ENV__SERVER_NAME
+              value: '"Your wallabag instance"'
+          image: wallabag/wallabag
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --no-verbose
+                - --tries=1
+                - --spider
+                - http://localhost
+            periodSeconds: 60
+            timeoutSeconds: 3
+          name: wallabag
+          ports:
+            - containerPort: 80
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/www/wallabag/web/assets/images
+              name: wallabag-claim0
+      restartPolicy: Always
+      volumes:
+        - name: wallabag-claim0
+          persistentVolumeClaim:
+            claimName: wallabag-claim0
+status: {}
