@@ -61,6 +61,13 @@ spec:
                 - -c
                 - "curl --head --fail --silent --max-time 5 http://localhost >/dev/null"
             timeoutSeconds: 3
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "curl --head --fail --silent --max-time 5 http://localhost >/dev/null"
+            timeoutSeconds: 3
           name: wallabag
           ports:
             - containerPort: 80
