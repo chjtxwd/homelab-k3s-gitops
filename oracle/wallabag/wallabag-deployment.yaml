@@ -34,7 +34,7 @@ spec:
             - name: SYMFONY__ENV__DATABASE_DRIVER
               value: pdo_mysql
             - name: SYMFONY__ENV__DATABASE_HOST
-              value: db
+              value: db.wallabag.svc.cluster.local
             - name: SYMFONY__ENV__DATABASE_NAME
               value: wallabag
             - name: SYMFONY__ENV__DATABASE_PASSWORD
