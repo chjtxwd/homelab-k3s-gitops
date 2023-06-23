@@ -46,9 +46,9 @@ spec:
             - name: SYMFONY__ENV__DATABASE_USER
               value: wallabag
             - name: SYMFONY__ENV__DOMAIN_NAME
-              value: https://your-wallabag-instance.wallabag.org
+              value: https://wallabag.haijin666.top
             - name: SYMFONY__ENV__FROM_EMAIL
-              value: wallabag@example.com
+              value: chjtxwd@vip.qq.com
             - name: SYMFONY__ENV__MAILER_DSN
               value: smtp://127.0.0.1
             - name: SYMFONY__ENV__SERVER_NAME
