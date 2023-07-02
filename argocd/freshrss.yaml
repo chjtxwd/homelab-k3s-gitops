@@ -1,9 +1,15 @@
-project: oracle
-source:
-  repoURL: 'https://github.com/chjtxwd/homelab-k3s-gitops'
-  path: oracle/freshrss
-  targetRevision: HEAD
-destination:
-  server: 'https://kubernetes.default.svc'
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: freshrss
   namespace: freshrss
-syncPolicy: {}
+spec:
+  project: oracle
+  source:
+    repoURL: 'https://github.com/chjtxwd/homelab-k3s-gitops'
+    path: oracle/freshrss
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: freshrss
+
