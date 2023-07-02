@@ -1,0 +1,9 @@
+project: oracle
+source:
+  repoURL: 'https://github.com/chjtxwd/homelab-k3s-gitops'
+  path: oracle/freshrss
+  targetRevision: HEAD
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: freshrss
+syncPolicy: {}
