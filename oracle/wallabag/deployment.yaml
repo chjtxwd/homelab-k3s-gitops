@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallabag-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallabag
+  template:
+    metadata:
+      labels:
+        app: wallabag
+    spec:
+      containers:
+        - name: wallabag
+          image: wallabag/wallabag
+          ports:
+            - containerPort: 80
+          env:
+            - name: SYMFONY__ENV__DOMAIN_NAME
+              value: "http://localhost"
