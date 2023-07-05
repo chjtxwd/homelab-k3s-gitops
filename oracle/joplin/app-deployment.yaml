@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ../../kompose convert -f ./docker-compose
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ../../kompose convert -f ./docker-compose
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/joplin-default: "true"
+        io.kompose.service: app
+    spec:
+      containers:
+        - env:
+            - name: APP_BASE_URL
+              value: https://websiteurl.com
+            - name: APP_PORT
+              value: "22300"
+            - name: DB_CLIENT
+              value: pg
+            - name: MAILER_AUTH_PASSWORD
+              value: Y0urP@ssw0rd
+            - name: MAILER_AUTH_USER
+              value: youremail@gmail.com
+            - name: MAILER_ENABLED
+              value: "1"
+            - name: MAILER_HOST
+              value: smtp.gmail.com
+            - name: MAILER_NOREPLY_EMAIL
+              value: email@email.com
+            - name: MAILER_NOREPLY_NAME
+              value: Joplin
+            - name: MAILER_PORT
+              value: "465"
+            - name: MAILER_SECURE
+              value: "1"
+            - name: POSTGRES_DATABASE
+              value: joplin
+            - name: POSTGRES_HOST
+              value: db
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              value: postgres
+          image: joplin/server:latest
+          name: app
+          ports:
+            - containerPort: 22300
+          resources: {}
+      restartPolicy: Always
+status: {}
