@@ -19,4 +19,4 @@ spec:
             - containerPort: 80
           env:
             - name: SYMFONY__ENV__DOMAIN_NAME
-              value: "http://localhost"
+              value: "https://wallabag.haijin666.top"
