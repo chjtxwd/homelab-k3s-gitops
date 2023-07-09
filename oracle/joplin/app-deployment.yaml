@@ -58,7 +58,7 @@ spec:
               value: "5432"
             - name: POSTGRES_USER
               value: postgres
-          image: joplin/server:latest
+          image: public.ecr.aws/u1z2d6w8/joplin:latest
           name: app
           ports:
             - containerPort: 22300
