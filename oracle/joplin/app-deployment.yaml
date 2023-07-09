@@ -27,9 +27,9 @@ spec:
       containers:
         - env:
             - name: APP_BASE_URL
-              value: https://websiteurl.com
+              value: https://joplin.haijin666.top
             - name: APP_PORT
-              value: "22300"
+              value: "443"
             - name: DB_CLIENT
               value: pg
             - name: MAILER_AUTH_PASSWORD
@@ -37,7 +37,7 @@ spec:
             - name: MAILER_AUTH_USER
               value: youremail@gmail.com
             - name: MAILER_ENABLED
-              value: "1"
+              value: "0"
             - name: MAILER_HOST
               value: smtp.gmail.com
             - name: MAILER_NOREPLY_EMAIL
