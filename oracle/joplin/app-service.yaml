@@ -12,7 +12,7 @@ spec:
   ports:
     - name: "22300"
       port: 22300
-      targetPort: 22300
+      targetPort: 443
   selector:
     io.kompose.service: app
 status:
