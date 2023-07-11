@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uptime-ingress
+
+
+spec:
+  rules:
+    - host: uptime.haijin666.top
+      http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: uptime-kuma
+                  port:
+                    number: 3001
