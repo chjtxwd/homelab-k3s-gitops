@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yml
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: threaded
+  name: threaded
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: threaded
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yml
+        kompose.version: 1.30.0 (9d8dcb518)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/huginn-default: "true"
+        io.kompose.service: threaded
+    spec:
+      containers:
+        - args:
+            - /scripts/init
+            - bin/threaded.rb
+          env:
+            - name: APP_SECRET_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  key: APP_SECRET_TOKEN
+                  name: tmp-secrets-env
+            - name: HUGINN_DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: HUGINN_DATABASE_NAME
+                  name: tmp-mysql-env
+            - name: HUGINN_DATABASE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: HUGINN_DATABASE_PASSWORD
+                  name: tmp-mysql-env
+            - name: HUGINN_DATABASE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: HUGINN_DATABASE_USERNAME
+                  name: tmp-mysql-env
+            - name: MYSQL_PORT_3306_TCP_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_PORT_3306_TCP_ADDR
+                  name: tmp-mysql-env
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: MYSQL_ROOT_PASSWORD
+                  name: tmp-mysql-env
+          image: ghcr.io/huginn/huginn-single-process
+          name: threaded
+          resources: {}
+      restartPolicy: Always
+status: {}

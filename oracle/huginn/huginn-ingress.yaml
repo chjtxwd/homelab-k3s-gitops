@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: prowlarr
-  namespace: prowlarr
+  name: huginn
+  namespace: huginn
 
 spec:
   rules:
-    - host: prowlarr.haijin666.top
+    - host: huginn.haijin666.top
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name:  prowlarr
+                name:  huginn
                 port:
                   number: 9696

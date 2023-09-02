@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  HUGINN_DATABASE_NAME: huginn
+  HUGINN_DATABASE_PASSWORD: myrootpassword
+  HUGINN_DATABASE_USERNAME: root
+  MYSQL_PORT_3306_TCP_ADDR: mysql
+  MYSQL_ROOT_PASSWORD: myrootpassword
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mysql-tmp-mysql-env
+  name: tmp-mysql-env
+  namespace: default
