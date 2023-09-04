@@ -16,12 +16,12 @@ write_files:
   permissions: '0755'
 runcmd:
 - yum update -y
+- /usr/local/bin/update_public_ip.sh
 - systemctl stop firewalld
 - systemctl disable firewalld
 - curl -fsSL https://tailscale.com/install.sh | sh
 - tailscale up --authkey=YOUR_AUTH_KEY
 - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --tls-san $(cat /tmp/ip | grep 'Public IP' | awk '{print $3}')" INSTALL_K3S_VERSION=v1.26.7+k3s1 sh -s -
-- /usr/local/bin/update_public_ip.sh
 - reboot
 
   EOT
