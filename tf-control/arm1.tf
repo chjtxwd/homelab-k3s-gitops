@@ -2,13 +2,20 @@ provider "oci" {}
 
 data "template_file" "cloud-config" {
   template = <<-EOT
-    #cloud-config
-    package_upgrade: true
-    packages:
-      - yum-utils
-    runcmd:
-      - yum update -y
-      - echo 'ok' > /tmp/ok_file
+   #cloud-config
+package_upgrade: true
+packages:
+- yum-utils
+- curl
+runcmd:
+- yum update -y
+- systemctl stop firewalld
+- systemctl disable firewalld
+- PUBLIC_IP=$(curl -s https://ifconfig.me/)
+- echo "Public IP: $PUBLIC_IP" >> /var/log/cloud-init-output.log
+- curl -fsSL https://tailscale.com/install.sh | sh
+- tailscale up --authkey=YOUR_AUTH_KEY
+- curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --tls-san $PUBLIC_IP" INSTALL_K3S_VERSION=v1.26.7+k3s1 sh -s -
   EOT
 }
 
