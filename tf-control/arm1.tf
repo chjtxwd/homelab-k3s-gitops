@@ -1,5 +1,6 @@
 provider "oci" {}
 
+
 resource "oci_core_instance" "generated_oci_core_instance" {
 	agent_config {
 		is_management_disabled = "false"
@@ -50,15 +51,7 @@ resource "oci_core_instance" "generated_oci_core_instance" {
 	is_pv_encryption_in_transit_enabled = "true"
 	metadata = {
 		"ssh_authorized_keys" = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCEATLwB8zEBSHmEVEUW0YD1TgkiKSvqzxwNIv3iIomZ3h0L39b98xrWRfNI46QYLKCeytZHqHsRTKH/PjkEUvalNs5ciK2kWdGypfX+1btcKM+xu7wrUeA/yGPLrrquD0F0BYOwE2JLs6+NN5gwzEuFF84UaYyE9KnTTakcKRZdSsUnhfym2DLqWSjgvuXc9oJJ4R+ioCXtFu9bTByMctbIByIqZrpDtubtgfADZvl23BvtWxuLb4U5qvcoOzk0Xucluukvglmw/ORQW5VE4qZl8gjap5qZY1DAZKdP7oXhS9NALBVrD1IJuvKwqQ5bril5Oa6esSSTwBqlmalVGGL",
-        "user_data" = <<EOF
-            #cloud-config
-            package_upgrade: true
-            packages:
-              - yum-utils
-            runcmd:
-              - yum update -y
-              - echo 'ok' > /tmp/ok_file
-EOF
+        "user_data" = base64encode(file(./user_data))
 	}
 	shape = "VM.Standard.A1.Flex"
 	shape_config {

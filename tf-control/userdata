@@ -1,0 +1,7 @@
+#cloud-config
+package_upgrade: true
+packages:
+- yum-utils
+runcmd:
+- yum update -y
+- echo 'ok' > /tmp/ok_file
