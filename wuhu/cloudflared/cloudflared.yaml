@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: cloudflared
-        image: cloudflare/cloudflared:2022.3.0
+        image: cloudflare/cloudflared:latest
         args:
         - tunnel
         # Points cloudflared to the config file, which configures what
@@ -72,7 +72,7 @@ metadata:
 data:
   config.yaml: |
     # Name of the tunnel you want to run
-    tunnel: wuhu
+    tunnel: k3s
     credentials-file: /etc/cloudflared/creds/credentials.json
     # Serves the metrics server under /metrics and the readiness server under /ready
     metrics: 0.0.0.0:2000
