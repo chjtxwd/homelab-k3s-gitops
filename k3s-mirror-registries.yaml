@@ -1,0 +1,24 @@
+mirrors:
+  docker.io:
+    endpoint:
+      - "docker.mirrors.sjtug.sjtu.edu.cn"
+  quay.io:
+    endpoint:
+      - "m.daocloud.io"
+    rewrite:
+      "(.*)": "quay.io/$1"
+  ghcr.io:
+    endpoint:
+      - "m.daocloud.io"
+    rewrite:
+      "(.*)": "ghcr.io/$1"
+  ghr.io:
+    endpoint:
+      - "m.daocloud.io"
+    rewrite:
+      "(.*)": "gcr.io/$1"
+  registry.k8s.io:
+    endpoint:
+      - "m.daocloud.io"
+    rewrite:
+      "(.*)": "registry.k8s.io/$1"
