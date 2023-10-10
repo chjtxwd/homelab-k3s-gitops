@@ -37,6 +37,6 @@ jobs:
         with:
           context: npc/
           file: npc/Dockerfile
-          tags: performancebot_nonprod:test
+          tags: ghcr.io/chjtxwd/npc:latest
           platforms: linux/amd64,linux/arm64
           push: true
