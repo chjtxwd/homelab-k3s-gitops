@@ -5,7 +5,7 @@ FROM alpine:latest
 WORKDIR /app
 
 # 下载并解压 nps 客户端
-RUN apk add --no-cache curl tar \
+RUN apk add --no-cache curl tar bash \
     && curl -L -o nps.tar.gz https://github.com/ehang-io/nps/releases/download/v0.26.10/linux_arm64_client.tar.gz \
     && tar -xzf nps.tar.gz \
     && rm nps.tar.gz
