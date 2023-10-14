@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose-linux-amd64 convert -f ./docker-compose.yml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose-linux-amd64 convert -f ./docker-compose.yml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/qinglong-default: "true"
+        io.kompose.service: web
+    spec:
+      containers:
+        - env:
+            - name: QlBaseUrl
+              value: /
+          image: whyour/qinglong:latest
+          name: web
+          ports:
+            - containerPort: 5700
+              hostIP: 0.0.0.0
+              hostPort: 5700
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /ql/data
+              name: web-claim0
+      restartPolicy: Always
+      volumes:
+        - name: web-claim0
+          persistentVolumeClaim:
+            claimName: web-claim0
+status: {}
