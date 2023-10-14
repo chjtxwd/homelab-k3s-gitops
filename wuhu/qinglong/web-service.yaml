@@ -10,8 +10,8 @@ metadata:
   name: web
 spec:
   ports:
-    - name: "5700"
-      port: 5700
+    - name: "http"
+      port: 80
       targetPort: 5700
   selector:
     io.kompose.service: web
