@@ -30,7 +30,7 @@ spec:
         - env:
             - name: GOTIFY_DEFAULTUSER_PASS
               value: custom
-          image: gotify/server
+          image: chjtxwd/gotify-server:buildx-latest
           name: gotify
           ports:
             - containerPort: 80
@@ -40,7 +40,7 @@ spec:
               name: gotify-claim0
       restartPolicy: Always
       nodeSelector:
-        kubernetes.io/arch: amd64
+        kubernetes.io/arch: arm64
       volumes:
         - name: gotify-claim0
           persistentVolumeClaim:
