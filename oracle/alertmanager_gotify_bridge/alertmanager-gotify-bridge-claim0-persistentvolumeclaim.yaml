@@ -3,9 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: alertmanager-gotify-bridge-claim0
-  name: alertmanager-gotify-bridge-claim0
-  namespace: default
+    io.kompose.service: alertmanagergotifybridge-claim0
+  name: alertmanagergotifybridge-claim0
 spec:
   accessModes:
     - ReadWriteOnce

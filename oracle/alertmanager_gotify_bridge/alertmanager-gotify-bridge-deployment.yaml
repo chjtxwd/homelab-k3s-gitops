@@ -6,14 +6,13 @@ metadata:
     kompose.version: 1.30.0 (9d8dcb518)
   creationTimestamp: null
   labels:
-    io.kompose.service: alertmanager-gotify-bridge
-  name: alertmanager-gotify-bridge
-  namespace: default
+    io.kompose.service: alertmanagergotifybridge
+  name: alertmanagergotifybridge
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: alertmanager-gotify-bridge
+      io.kompose.service: alertmanagergotifybridge
   strategy:
     type: Recreate
   template:
@@ -23,8 +22,8 @@ spec:
         kompose.version: 1.30.0 (9d8dcb518)
       creationTimestamp: null
       labels:
-        io.kompose.network/alertmanager-gotify-bridge-default: "true"
-        io.kompose.service: alertmanager-gotify-bridge
+        io.kompose.network/alertmanagergotifybridge-default: "true"
+        io.kompose.service: alertmanagergotifybridge
     spec:
       containers:
         - env:
@@ -39,7 +38,7 @@ spec:
                   name: gotify-secrets
                   key: GOTIFY_TOKEN
           image: ghcr.io/druggeri/alertmanager_gotify_bridge:master
-          name: alertmanager-gotify-bridge
+          name: alertmanagergotifybridge
           ports:
             - containerPort: 8080
               hostPort: 8080
@@ -47,10 +46,10 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /templates
-              name: alertmanager-gotify-bridge-claim0
+              name: alertmanagergotifybridge-claim0
       restartPolicy: Always
       volumes:
-        - name: alertmanager-gotify-bridge-claim0
+        - name: alertmanagergotifybridge-claim0
           persistentVolumeClaim:
-            claimName: alertmanager-gotify-bridge-claim0
+            claimName: alertmanagergotifybridge-claim0
 status: {}
