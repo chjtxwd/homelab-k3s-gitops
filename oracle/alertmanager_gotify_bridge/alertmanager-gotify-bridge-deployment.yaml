@@ -37,7 +37,7 @@ spec:
                 secretKeyRef:
                   name: gotify-secrets
                   key: GOTIFY_TOKEN
-          image: ghcr.io/druggeri/alertmanager_gotify_bridge:master
+          image: ghcr.io/druggeri/alertmanager_gotify_bridge:latest
           name: alertmanagergotifybridge
           ports:
             - containerPort: 8080
