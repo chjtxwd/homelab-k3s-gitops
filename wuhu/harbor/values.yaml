@@ -80,7 +80,8 @@ exporter:
   image:
     repository: goharbor/harbor-exporter
     tag: v2.9.0
-  nodeSelector: {}
+  nodeSelector: 
+    kubernetes.io/arch: amd64
   podAnnotations: {}
   podLabels: {}
   priorityClassName: null
@@ -179,7 +180,8 @@ jobservice:
     - file
   loggerSweeperDuration: 14
   maxJobWorkers: 10
-  nodeSelector: {}
+  nodeSelector: 
+    kubernetes.io/arch: amd64
   notification:
     webhook_job_http_client_timeout: 3
     webhook_job_max_retry: 3
@@ -223,7 +225,8 @@ nginx:
   image:
     repository: goharbor/nginx-photon
     tag: v2.9.0
-  nodeSelector: {}
+  nodeSelector: 
+    kubernetes.io/arch: amd64
   podAnnotations: {}
   podLabels: {}
   priorityClassName: null
@@ -307,7 +310,8 @@ portal:
   image:
     repository: goharbor/harbor-portal
     tag: v2.9.0
-  nodeSelector: {}
+  nodeSelector: 
+    kubernetes.io/arch: amd64
   podAnnotations: {}
   podLabels: {}
   priorityClassName: null
@@ -343,7 +347,8 @@ redis:
       repository: goharbor/redis-photon
       tag: v2.9.0
     jobserviceDatabaseIndex: '1'
-    nodeSelector: {}
+    nodeSelector: 
+      kubernetes.io/arch: amd64
     priorityClassName: null
     registryDatabaseIndex: '2'
     serviceAccountName: ''
