@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bililive-go-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bililive-go
+  template:
+    metadata:
+      labels:
+        app: bililive-go
+    spec:
+      containers:
+      - name: bililive-go
+        image: chigusa/bililive-go
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/bililive-go/config.yml
+          subPath: config.yml
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: config-yml-pvc # Name of your PVC
