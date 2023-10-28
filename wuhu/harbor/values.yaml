@@ -108,7 +108,7 @@ expose:
       annotations: {}
       labels: {}
     hosts:
-      core: core.harbor.domain
+      core: harbor.haijin666.top
     kubeVersionOverride: ''
   loadBalancer:
     IP: ''
