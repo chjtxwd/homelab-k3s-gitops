@@ -54,7 +54,8 @@ database:
       permissions: {}
     livenessProbe:
       timeoutSeconds: 1
-    nodeSelector: {}
+    nodeSelector: 
+      kubernetes.io/arch: amd64
     password: changeit
     priorityClassName: null
     readinessProbe:
@@ -419,7 +420,8 @@ trivy:
     repository: goharbor/trivy-adapter-photon
     tag: v2.9.0
   insecure: false
-  nodeSelector: {}
+  nodeSelector: 
+    kubernetes.io/arch: amd64
   offlineScan: false
   podAnnotations: {}
   podLabels: {}
