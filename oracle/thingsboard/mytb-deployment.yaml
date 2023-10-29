@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mytb
+  name: mytb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mytb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/thingsboard-default: "true"
+        io.kompose.service: mytb
+    spec:
+      containers:
+        - env:
+            - name: TB_QUEUE_RABBIT_MQ_HOST
+              value: localhost
+            - name: TB_QUEUE_RABBIT_MQ_PASSWORD
+              value: YOUR_PASSWORD
+            - name: TB_QUEUE_RABBIT_MQ_PORT
+              value: "5672"
+            - name: TB_QUEUE_RABBIT_MQ_USERNAME
+              value: YOUR_USERNAME
+            - name: TB_QUEUE_TYPE
+              value: rabbitmq
+          image: thingsboard/tb-postgres
+          name: mytb
+          ports:
+            - containerPort: 9090
+              hostPort: 8080
+              protocol: TCP
+            - containerPort: 1883
+              hostPort: 1883
+              protocol: TCP
+            - containerPort: 7070
+              hostPort: 7070
+              protocol: TCP
+            - containerPort: 5683
+              hostPort: 5683
+              protocol: UDP
+            - containerPort: 5684
+              hostPort: 5684
+              protocol: UDP
+            - containerPort: 5685
+              hostPort: 5685
+              protocol: UDP
+            - containerPort: 5686
+              hostPort: 5686
+              protocol: UDP
+            - containerPort: 5687
+              hostPort: 5687
+              protocol: UDP
+            - containerPort: 5688
+              hostPort: 5688
+              protocol: UDP
+          resources: {}
+          volumeMounts:
+            - mountPath: /data
+              name: mytb-claim0
+            - mountPath: /var/log/thingsboard
+              name: mytb-claim1
+      restartPolicy: Always
+      volumes:
+        - name: mytb-claim0
+          persistentVolumeClaim:
+            claimName: mytb-claim0
+        - name: mytb-claim1
+          persistentVolumeClaim:
+            claimName: mytb-claim1
+status: {}
