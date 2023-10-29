@@ -25,6 +25,8 @@ spec:
         io.kompose.network/thingsboard-default: "true"
         io.kompose.service: mytb
     spec:
+      nodeSelector:  
+        kubernetes.io/arch: arm64   
       containers:
         - env:
             - name: TB_QUEUE_RABBIT_MQ_HOST
