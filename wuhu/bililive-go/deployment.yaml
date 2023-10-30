@@ -17,11 +17,10 @@ spec:
         image: chigusa/bililive-go
         ports:
         - containerPort: 8080
-        volumeMounts:
-        - name: config-volume
-          mountPath: /etc/bililive-go/config.yml
-          subPath: config.yml
+        env:
+        - name: CONFIG_FILE
+          value: /etc/bililive-go/config.yml
       volumes:
       - name: config-volume
-        persistentVolumeClaim:
-          claimName: config-yml-pvc # Name of your PVC
+        configMap:
+          name: config-map # 指向上面创建的ConfigMap的名称
