@@ -20,6 +20,9 @@ spec:
         env:
         - name: CONFIG_FILE
           value: /etc/bililive-go/config.yml
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/bililive-go # 挂载整个 ConfigMap
       volumes:
       - name: config-volume
         configMap:
