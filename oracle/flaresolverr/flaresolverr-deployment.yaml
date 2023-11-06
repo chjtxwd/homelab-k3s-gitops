@@ -24,6 +24,8 @@ spec:
         io.kompose.network/flaresolverr-default: "true"
         io.kompose.service: flaresolverr
     spec:
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - env:
             - name: LOG_HTML
