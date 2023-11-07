@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose-local.yml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: wyl
+  name: wyl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: wyl
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose-local.yml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/watchyourlan-default: "true"
+        io.kompose.service: wyl
+    spec:
+      containers:
+        - args:
+            - -n
+            - http://0.0.0.0:8850
+          env:
+            - name: DBPATH
+              value: /data/db.sqlite
+            - name: GUIIP
+              value: 0.0.0.0
+            - name: GUIPORT
+              value: "8840"
+            - name: IFACE
+              value: enp4s0
+            - name: IGNOREIP
+              value: "no"
+            - name: THEME
+              value: darkly
+            - name: TIMEOUT
+              value: "120"
+            - name: TZ
+              value: Asia/Shanghai
+          image: aceberg/watchyourlan
+          name: wyl
+          ports:
+            - containerPort: 8850
+              hostPort: 8850
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /data
+              name: wyl-claim0
+      restartPolicy: Always
+      volumes:
+        - name: wyl-claim0
+          persistentVolumeClaim:
+            claimName: wyl-claim0
+status: {}
