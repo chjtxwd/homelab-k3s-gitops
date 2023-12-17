@@ -40,8 +40,9 @@ spec:
             - mountPath: /config
               name: freshrss-claim0
       restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: arm64
       volumes:
         - name: freshrss-claim0
           persistentVolumeClaim:
             claimName: freshrss-claim0
-status: {}
