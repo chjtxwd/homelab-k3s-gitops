@@ -12,6 +12,8 @@ spec:
       labels:
         app: wallabag
     spec:
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - name: wallabag
           image: wallabag/wallabag
