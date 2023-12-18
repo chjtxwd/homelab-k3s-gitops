@@ -25,6 +25,8 @@ spec:
         io.kompose.network/radarr-default: "true"
         io.kompose.service: radarr
     spec:
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - env:
             - name: PGID

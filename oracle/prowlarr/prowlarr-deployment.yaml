@@ -26,6 +26,8 @@ spec:
         io.kompose.network/prowlarr-default: "true"
         io.kompose.service: prowlarr
     spec:
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - env:
             - name: PGID

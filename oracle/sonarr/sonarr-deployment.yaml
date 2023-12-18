@@ -25,6 +25,8 @@ spec:
         io.kompose.network/sonarr-default: "true"
         io.kompose.service: sonarr
     spec:
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - env:
             - name: PGID
