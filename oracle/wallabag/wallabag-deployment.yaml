@@ -20,3 +20,15 @@ spec:
           env:
             - name: SYMFONY__ENV__DOMAIN_NAME
               value: "https://wallabag.haijin666.top"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
