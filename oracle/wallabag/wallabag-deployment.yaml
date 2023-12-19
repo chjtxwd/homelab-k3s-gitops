@@ -14,6 +14,10 @@ spec:
     spec:
       nodeSelector:        
         kubernetes.io/arch: arm64 
+      volumes:
+        - name: wallabag-data
+          persistentVolumeClaim:
+            claimName: wallabag-pvc
       containers:
         - name: wallabag
           image: wallabag/wallabag
@@ -22,6 +26,9 @@ spec:
           env:
             - name: SYMFONY__ENV__DOMAIN_NAME
               value: "https://wallabag.haijin666.top"
+          volumeMounts:
+            - name: wallabag-data
+              mountPath: /var/www/wallabag/data/db
           livenessProbe:
             httpGet:
               path: /
@@ -34,3 +41,12 @@ spec:
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
+  persistentVolumeClaims:
+    - metadata:
+        name: wallabag-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
