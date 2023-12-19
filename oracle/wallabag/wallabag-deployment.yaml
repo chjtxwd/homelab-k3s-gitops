@@ -1,35 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: wallabag-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
----
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: init-pod
-spec:
-  containers:
-    - name: init-container
-      image: busybox
-      command: ["/bin/sh", "-c", "echo 'Initializing wallabag database' > /var/www/wallabag/data/db/wallabag.sqlite"]
-      volumeMounts:
-        - name: wallabag-data
-          mountPath: /var/www/wallabag/data/db
-  volumes:
-    - name: wallabag-data
-      persistentVolumeClaim:
-        claimName: wallabag-pvc
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,12 +12,8 @@ spec:
       labels:
         app: wallabag
     spec:
-      nodeSelector:
-        kubernetes.io/arch: arm64
-      volumes:
-        - name: wallabag-data
-          persistentVolumeClaim:
-            claimName: wallabag-pvc
+      nodeSelector:        
+        kubernetes.io/arch: arm64 
       containers:
         - name: wallabag
           image: wallabag/wallabag
@@ -58,9 +22,6 @@ spec:
           env:
             - name: SYMFONY__ENV__DOMAIN_NAME
               value: "https://wallabag.haijin666.top"
-          volumeMounts:
-            - name: wallabag-data
-              mountPath: /var/www/wallabag/data/db
           livenessProbe:
             httpGet:
               path: /
