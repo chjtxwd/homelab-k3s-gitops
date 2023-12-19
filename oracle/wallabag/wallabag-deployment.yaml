@@ -11,6 +11,25 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-pod
+spec:
+  containers:
+    - name: init-container
+      image: busybox
+      command: ["/bin/sh", "-c", "echo 'Initializing wallabag database' > /var/www/wallabag/data/db/wallabag.sqlite"]
+      volumeMounts:
+        - name: wallabag-data
+          mountPath: /var/www/wallabag/data/db
+  volumes:
+    - name: wallabag-data
+      persistentVolumeClaim:
+        claimName: wallabag-pvc
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
