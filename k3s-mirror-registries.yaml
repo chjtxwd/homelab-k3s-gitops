@@ -12,7 +12,7 @@ mirrors:
       - "m.daocloud.io"
     rewrite:
       "(.*)": "ghcr.io/$1"
-  ghr.io:
+  gcr.io:
     endpoint:
       - "m.daocloud.io"
     rewrite:
