@@ -10,8 +10,8 @@ metadata:
   name: recorder
 spec:
   ports:
-    - name: "2356"
-      port: 2356
+    - name: "http"
+      port: 80
       targetPort: 2356
   selector:
     io.kompose.service: recorder
