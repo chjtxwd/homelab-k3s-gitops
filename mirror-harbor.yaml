@@ -1,0 +1,26 @@
+mirrors:
+  docker.io:
+    endpoint:
+      - "harbor.haijin666.top"
+    rewrite:
+      "(.*)": "daocloud/docker.io/$1"
+  quay.io:
+    endpoint:
+      - "harbor.haijin666.top"
+    rewrite:
+      "(.*)": "daocloud/quay.io/$1"
+  ghcr.io:
+    endpoint:
+      - "harbor.haijin666.top"
+    rewrite:
+      "(.*)": "daocloud/ghcr.io/$1"
+  gcr.io:
+    endpoint:
+      - "harbor.haijin666.top"
+    rewrite:
+      "(.*)": "daocloud/gcr.io/$1"
+  registry.k8s.io:
+    endpoint:
+      - "harbor.haijin666.top"
+    rewrite:
+      "(.*)": "daocloud/registry.k8s.io/$1"
