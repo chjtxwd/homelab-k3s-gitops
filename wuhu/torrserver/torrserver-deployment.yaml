@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: torrserver
+  name: torrserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: torrserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/torrserver-default: "true"
+        io.kompose.service: torrserver
+    spec:
+      containers:
+        - env:
+            - name: TS_CONF_PATH
+              value: /opt/ts/config
+            - name: TS_DONTKILL
+              value: "1"
+            - name: TS_HTTPAUTH
+              value: "0"
+            - name: TS_PORT
+              value: "5665"
+            - name: TS_TORR_DIR
+              value: /opt/ts/torrents
+          image: ghcr.io/yourok/torrserver
+          name: torrserver
+          ports:
+            - containerPort: 5665
+              hostPort: 5665
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/ts/torrents
+              name: torrserver-claim0
+            - mountPath: /opt/ts/config
+              name: torrserver-claim1
+      restartPolicy: Always
+      volumes:
+        - name: torrserver-claim0
+          persistentVolumeClaim:
+            claimName: torrserver-claim0
+        - name: torrserver-claim1
+          persistentVolumeClaim:
+            claimName: torrserver-claim1
+status: {}
