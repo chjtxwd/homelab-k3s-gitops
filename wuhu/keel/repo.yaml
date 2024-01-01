@@ -1,0 +1,6 @@
+apiVersion: catalog.cattle.io/v1
+kind: ClusterRepo
+metadata:
+  name: keel
+spec:
+  url: https://charts.keel.sh
