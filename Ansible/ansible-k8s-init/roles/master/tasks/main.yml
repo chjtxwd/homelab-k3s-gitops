@@ -1,0 +1,18 @@
+---
+# tasks file for master
+
+- name: Set fixed IP address on master
+  lineinfile:
+    path: /etc/netplan/01-netcfg.yaml
+    line: "    addresses: [192.168.0.100/24]"
+  become: yes
+
+- name: Set hostname to master
+  hostname:
+    name: master
+  become: yes
+
+- name: Run k3s installation script on master
+  command: "curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -s - --flannel-backend=none --disable-network-policy --disable=traefik"
+  become: yes
+  when: "'master' in group_names"
