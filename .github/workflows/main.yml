@@ -1,12 +1,11 @@
 name: Build and Push ARM Docker Image
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     paths:
       - 'npc/Dockerfile'
+    branches:
+      - main
 
 jobs:
   build-and-push:
