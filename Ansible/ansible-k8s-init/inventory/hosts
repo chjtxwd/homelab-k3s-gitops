@@ -1,7 +1,8 @@
-[master]
-192.168.0.106 ansible_user=root
+[master_bootstrap]
+192.168.0.121 ansible_user=root
 
-[dbservers]
-one.example.com
-two.example.com
-three.example.com
+[master]
+192.168.0.100 ansible_user=root
+
+[worker]
+192.168.0.111 ansible_user=root

@@ -1,0 +1,13 @@
+- name: Configure network interface
+  nmcli:
+    conn_name: 'ens18'
+    ifname: 'ens18'
+    ip4: '192.168.0.100/24'
+    gw4: '192.168.0.1'
+    state: present
+    type: 'ethernet'
+    autoconnect: yes
+    dns4: '192.168.0.1'
+
+- name: Reboot the machine
+  reboot:

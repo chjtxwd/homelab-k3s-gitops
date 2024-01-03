@@ -43,7 +43,10 @@
   register: k3s_installed
 
 - name: Run k3s installation script on master
-  shell: "curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -s - --flannel-backend=none --disable-network-policy --disable=traefik"
+  shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_MIRROR=cn sh -s - --flannel-backend=none --disable-network-policy --disable=traefik"
+  environment:
+    http_proxy: http://192.168.0.103:10809
+    https_proxy: http://192.168.0.103:10809
   become: yes
   when: "'master' in group_names and not k3s_installed.stat.exists"
 
@@ -141,6 +144,13 @@
       name: k3s-lb-pool
       namespace: metallb-system
     EOF
+  register: result
+  until: result is succeeded
+  retries: 10
+  delay: 60
+
+- name: Copy K3s configuration to .kube directory
+  shell: cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 
 - name: Download Istio
   shell: curl -L https://istio.io/downloadIstio | sh -

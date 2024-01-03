@@ -1,4 +1,11 @@
 ---
+- hosts: master_bootstrap
+  roles:
+  - role: master_bootstrap
+
+- hosts: worker_bootstrap
+  roles:
+  - role: worker_bootstrap
 
 - hosts: master
   roles:
