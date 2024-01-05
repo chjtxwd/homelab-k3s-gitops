@@ -1,0 +1,7 @@
+- name: Get IP address
+  set_fact:
+    host_ip: "{{ ansible_default_ipv4.address }}"
+
+- name: Set hostname to concatenated IP address
+  hostname:
+    name: "{{ host_ip | regex_replace('[.]', '-') }}"

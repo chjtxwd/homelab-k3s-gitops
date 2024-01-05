@@ -2,12 +2,15 @@
   nmcli:
     conn_name: 'ens18'
     ifname: 'ens18'
-    ip4: '192.168.0.100/24'
-    gw4: '192.168.0.1'
+    ip4: '{{ hostvars[inventory_hostname].ip_address }}/24'
+    gw4: '{{ hostvars[inventory_hostname].gateway }}'
     state: present
     type: 'ethernet'
     autoconnect: yes
-    dns4: '192.168.0.1'
+    dns4: '{{ hostvars[inventory_hostname].dns_server }}'
+  when: "'ip_address' in hostvars[inventory_hostname] and 'gateway' in hostvars[inventory_hostname] and 'dns_server' in hostvars[inventory_hostname]"
 
-- name: Reboot the machine
-  reboot:
+- name: Restart network service
+  systemd:
+    state: restarted
+    name: NetworkManager
