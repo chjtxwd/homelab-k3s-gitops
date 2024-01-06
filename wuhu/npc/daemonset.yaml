@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: npc-container
-        image: registry.cn-shanghai.aliyuncs.com/haijin/npc:latest
+        image: ghcr.io/chjtxwd/nps:latest
         command: ["./npc", "-server=$(SERVER)", "-vkey=$(VKEY)", "-type=tcp"]
         env:
         - name: SERVER
