@@ -45,7 +45,6 @@ spec:
               name: localtime
             - mountPath: /usr/local/next-terminal/data
               name: next-terminal-data
-          restartPolicy: Always
       volumes:
         - name: localtime
           hostPath:
