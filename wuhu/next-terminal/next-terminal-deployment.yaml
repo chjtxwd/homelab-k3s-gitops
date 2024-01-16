@@ -42,15 +42,15 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /etc/localtime
-              name: next-terminal-claim0
+              name: localtime
             - mountPath: /usr/local/next-terminal/data
-              name: next-terminal-claim1
-      restartPolicy: Always
+              name: next-terminal-data
+          restartPolicy: Always
       volumes:
-        - name: next-terminal-claim0
-          persistentVolumeClaim:
-            claimName: next-terminal-claim0
-        - name: next-terminal-claim1
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: next-terminal-data
           persistentVolumeClaim:
             claimName: next-terminal-claim1
 status: {}
