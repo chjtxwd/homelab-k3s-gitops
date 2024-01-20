@@ -29,8 +29,8 @@ WORKER_MACHINE_CONFIG_PATH=${WORKER_MACHINE_CONFIG_PATH:="./worker.yaml"}
 
 upload_ova () {
     ## Import desired Talos Linux OVA into a new content library
-    govc library.create ${CLUSTER_NAME}
-    govc library.import -n talos-${TALOS_VERSION} ${CLUSTER_NAME} ${OVA_PATH}
+    govc library.create -k ${CLUSTER_NAME}
+    govc library.import -k -n talos-${TALOS_VERSION} ${CLUSTER_NAME} ${OVA_PATH}
 }
 
 create () {
