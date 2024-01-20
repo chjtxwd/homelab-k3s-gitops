@@ -19,19 +19,10 @@ data:
       use_native_flv_parser: false
       remove_symbol_other_character: false
     live_rooms:
-    - url: https://www.douyu.com/9642214?dyshid=0-693fcb44c740f3c7f08e654900041601&dyshci=174
-      is_listening: true
-      quality: 0
     - url: https://live.douyin.com/95931337431
       is_listening: true
       quality: 0
-    - url: https://www.douyu.com/20360?dyshid=0-693fcb44c740f3c7f08e654900041601&dyshci=1282
-      is_listening: true
-      quality: 0
     - url: https://live.douyin.com/41064345870
-      is_listening: true
-      quality: 0
-    - url: https://live.douyin.com/171250979
       is_listening: true
       quality: 0
     out_put_tmpl: ""
