@@ -1,0 +1,17 @@
+services:
+  kubespider:
+    image: cesign/kubespider:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    ports:
+      - 3080:3080
+    volumes:
+      - /.config:/app/.config
+    networks:
+      - kb
+
+networks:
+  kb:
+    name: kb
