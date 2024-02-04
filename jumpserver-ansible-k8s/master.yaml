@@ -1,0 +1,167 @@
+---
+- name: Configure and Install K3s, Cilium, MetalLB, and Istio
+  hosts: all
+  become: yes
+  tasks:
+    - name: Set hostname to master
+      hostname:
+        name: master
+        
+    - name: Upgrade all packages
+      apt:
+        name: "*"
+        state: latest
+
+    - name: Ensure tar is installed
+      package:
+        name: tar
+        state: present
+      become: yes
+
+
+    - name: Check if k3s is already installed
+      stat:
+        path: /usr/local/bin/k3s
+      register: k3s_installed
+
+    - name: Run k3s installation script on master
+      shell: "curl -sfL https://get.k3s.io | INSTALL_K3S_MIRROR=cn sh -s - --flannel-backend=none --disable-network-policy --disable=traefik"
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+      become: yes
+
+
+    - name: Get Cilium CLI version
+      shell: "curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt"
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+      register: cilium_cli_version
+
+    - name: Set architecture
+      set_fact:
+        cli_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+
+    - name: Download Cilium CLI
+      get_url:
+        url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version.stdout }}/cilium-linux-{{ cli_arch }}.tar.gz"
+        dest: "/tmp/cilium-linux-{{ cli_arch }}.tar.gz"
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Download Cilium CLI checksum
+      get_url:
+        url: "https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version.stdout }}/cilium-linux-{{ cli_arch }}.tar.gz.sha256sum"
+        dest: "/tmp/cilium-linux-{{ cli_arch }}.tar.gz.sha256sum"
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Check Cilium CLI checksum
+      shell: "sha256sum --check /tmp/cilium-linux-{{ cli_arch }}.tar.gz.sha256sum"
+      args:
+        chdir: /tmp/
+      register: checksum_result
+      failed_when: "'OK' not in checksum_result.stdout"
+
+    - name: Extract Cilium CLI
+      unarchive:
+        src: "/tmp/cilium-linux-{{ cli_arch }}.tar.gz"
+        dest: /usr/local/bin
+        remote_src: yes
+      become: yes
+
+    - name: Remove downloaded files
+      file:
+        path: "/tmp/cilium-linux-{{ cli_arch }}.tar.gz"
+        state: absent
+      become: yes
+
+    - name: Install Cilium
+      shell: cilium install --version 1.14.5
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+      become: yes
+
+    - name: Download registries.yaml through a proxy
+      get_url:
+        url: https://raw.githubusercontent.com/chjtxwd/homelab-k3s-gitops/main/k3s-mirror-registries.yaml
+        dest: /etc/rancher/k3s/registries.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+      become: yes
+
+    - name: Restart k3s service
+      service:
+        name: k3s
+        state: restarted
+      become: yes
+
+    - name: Install MetalLB configuration through a proxy
+      shell:
+        cmd: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Apply MetalLB configuration
+      shell: |
+        kubectl apply -f - <<EOF
+        apiVersion: metallb.io/v1beta1
+        kind: IPAddressPool
+        metadata:
+          name: k3s-lb-pool
+          namespace: metallb-system
+        spec:
+          addresses:
+          - 10.0.0.200-10.10.0.250
+        ---
+        apiVersion: metallb.io/v1beta1
+        kind: L2Advertisement
+        metadata:
+          name: k3s-lb-pool
+          namespace: metallb-system
+        EOF
+      register: result
+      until: result is succeeded
+      retries: 10
+      delay: 60
+
+    - name: Copy K3s configuration to .kube directory
+      shell: cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+
+    - name: Download Istio
+      shell: curl -L https://istio.io/downloadIstio | sh -
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Run istioctl install
+      shell: /root/istio-1.20.1/bin/istioctl install --set profile=demo -y 
+
+    - name: Enable Istio prometheus
+      shell: kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/prometheus.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Enable Istio grafana
+      shell: kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/grafana.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Enable Istio kiali
+      shell: kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/kiali.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
+
+    - name: Enable Istio zipkin
+      shell: kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.20/samples/addons/extras/zipkin.yaml
+      environment:
+        http_proxy: http://10.0.0.249:10809
+        https_proxy: http://10.0.0.249:10809
