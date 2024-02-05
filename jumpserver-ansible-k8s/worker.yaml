@@ -1,0 +1,41 @@
+---
+- name: Join k3s cluster
+  hosts: all
+  become: yes
+  tasks:
+  - name: Set hostname to worker + current minute
+    hostname:
+      name: "worker{{ lookup('pipe', 'date +%M') }}"
+
+  - name: Upgrade all packages
+    apt:
+      name: "*"
+      state: latest
+
+  - name: Run k3s join
+    shell: "curl -sfL https://get.k3s.io | K3S_URL=https://192.168.2.101:6443 K3S_TOKEN=MYTOKEN sh -"
+    environment:
+      http_proxy: http://192.168.2.100:10809
+      https_proxy: http://192.168.2.100:10809
+
+  
+  - name: Create /etc/rancher/k3s folder
+    file:
+      path: /etc/rancher/k3s
+      state: directory
+    become: yes 
+
+  - name: Download registries.yaml through a proxy
+    get_url:
+      url: https://raw.githubusercontent.com/chjtxwd/homelab-k3s-gitops/main/k3s-mirror-registries.yaml
+      dest: /etc/rancher/k3s/registries.yaml
+    environment:
+      http_proxy: http://192.168.2.100:10809
+      https_proxy: http://192.168.2.100:10809
+    become: yes
+
+  - name: Restart k3s service
+    service:
+      name: k3s-agent
+      state: restarted
+    become: yes
