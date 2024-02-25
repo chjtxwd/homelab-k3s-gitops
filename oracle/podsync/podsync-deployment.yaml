@@ -28,6 +28,7 @@ spec:
       containers:
         - image: ghcr.io/chjtxwd/podsync:nightly
           name: podsync
+          command: ["sleep", "3600"] # sleep 1 hour (3600 seconds)
           ports:
             - containerPort: 80
               protocol: TCP
