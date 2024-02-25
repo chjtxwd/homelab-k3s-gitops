@@ -28,7 +28,7 @@ spec:
       containers:
         - image: ghcr.io/chjtxwd/podsync:nightly
           name: podsync
-          command: ["/app/podsync", "-c", "/app/config/config.toml"]
+          command: ["sleep", "3600"]
           ports:
             - containerPort: 80
               protocol: TCP
