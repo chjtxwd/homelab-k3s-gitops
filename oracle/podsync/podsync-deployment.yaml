@@ -30,7 +30,6 @@ spec:
           name: podsync
           ports:
             - containerPort: 80
-              hostPort: 80
               protocol: TCP
           resources: {}
           volumeMounts:
