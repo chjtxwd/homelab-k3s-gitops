@@ -28,7 +28,7 @@ spec:
       containers:
         - image: ghcr.io/chjtxwd/podsync:nightly
           name: podsync
-          command: ["sleep", "3600"] # sleep 1 hour (3600 seconds)
+          command: ["/app/podsync", "-c", "/app/config/config.toml"]
           ports:
             - containerPort: 80
               protocol: TCP
@@ -36,7 +36,7 @@ spec:
           volumeMounts:
             - mountPath: /app/data
               name: podsync-claim0
-            - mountPath: /app
+            - mountPath: /app/config
               readOnly: true
               name: podsync-config
       restartPolicy: Always
