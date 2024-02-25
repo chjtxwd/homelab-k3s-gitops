@@ -37,7 +37,6 @@ spec:
             - mountPath: /app/data
               name: podsync-claim0
             - mountPath: /app/config
-              readOnly: true
               name: podsync-config
       restartPolicy: Always
       volumes:
