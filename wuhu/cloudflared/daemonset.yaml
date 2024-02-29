@@ -12,17 +12,19 @@ spec:
         app: cloudflared
     spec:
       containers:
-      - name: cloudflared
-        image: cloudflare/cloudflared:latest
-        env:
-        - name: TUNNEL_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: cloudflared-secret
-              key: token
-        args:
-        - tunnel
-        - --no-autoupdate
-        - run
-        - --token
-        - $(TUNNEL_TOKEN)
+        - name: cloudflared
+          image: cloudflare/cloudflared:latest
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+            - --cred-file
+            - /etc/cloudflared/token
+          volumeMounts:
+            - name: cloudflared-cred
+              mountPath: /etc/cloudflared
+              readOnly: true
+      volumes:
+        - name: cloudflared-cred
+          secret:
+            secretName: cloudflared-secret
