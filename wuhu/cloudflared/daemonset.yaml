@@ -15,11 +15,8 @@ spec:
       - name: cloudflared
         image: cloudflare/cloudflared:latest
         args:
-        - tunnel
-        - --no-autoupdate
-        - run
-        - --token
-        - /etc/cloudflared/token
+        - sleep
+        - "3600"
         volumeMounts:
         - name: cloudflared-token
           mountPath: /etc/cloudflared
