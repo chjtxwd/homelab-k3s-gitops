@@ -13,4 +13,4 @@ spec:
           service:
             name: web
             port:
-              number: 5700
+              number: 80
