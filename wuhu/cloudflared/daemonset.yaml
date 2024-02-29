@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cloudflared-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - name: cloudflared
+        image: cloudflare/cloudflared:latest
+        args:
+        - tunnel
+        - --no-autoupdate
+        - run
+        - --token
+        - /etc/cloudflared/token
+        volumeMounts:
+        - name: cloudflared-token
+          mountPath: /etc/cloudflared
+          readOnly: true
+      volumes:
+      - name: cloudflared-token
+        secret:
+          secretName: cloudflared-secret
