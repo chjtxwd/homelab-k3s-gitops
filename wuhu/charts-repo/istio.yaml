@@ -1,6 +1,0 @@
-apiVersion: catalog.cattle.io/v1
-kind: ClusterRepo
-metadata:
-  name: istio
-spec:
-  url: https://istio-release.storage.googleapis.com/charts
