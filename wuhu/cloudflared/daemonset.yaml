@@ -14,14 +14,15 @@ spec:
       containers:
       - name: cloudflared
         image: cloudflare/cloudflared:latest
+        env:
+        - name: TUNNEL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cloudflared-secret
+              key: token
         args:
-        - sleep
-        - "3600"
-        volumeMounts:
-        - name: cloudflared-token
-          mountPath: /etc/cloudflared
-          readOnly: true
-      volumes:
-      - name: cloudflared-token
-        secret:
-          secretName: cloudflared-secret
+        - tunnel
+        - --no-autoupdate
+        - run
+        - --token
+        - $(TUNNEL_TOKEN)
