@@ -1,10 +1,5 @@
 create secret with
 ```
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cloudflared-secret
-type: Opaque
-data:
-  token: token
+kubectl create secret generic cloudflared-secret \
+    --from-literal=token=YOURTOKEN
 ```
