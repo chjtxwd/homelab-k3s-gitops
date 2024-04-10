@@ -9,6 +9,7 @@ metadata:
   labels:
     io.kompose.service: prowlarr
   name: prowlarr
+  namespace: prowlarr
 spec:
   ports:
     - name: "9696"

@@ -5,6 +5,7 @@ metadata:
   labels:
     io.kompose.service: prowlarr-claim0
   name: prowlarr-claim0
+  namespace: prowlarr
 spec:
   accessModes:
     - ReadWriteOnce
