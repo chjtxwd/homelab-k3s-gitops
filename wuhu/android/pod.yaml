@@ -19,10 +19,6 @@ spec:
       limits:
         cpu: "2"
         memory: 4Gi
-    volumeDevices:
-    - name: devkvm
-      devicePath: /dev/kvm
-  volumes:
-  - name: devkvm
-    hostPath:
-      path: /dev/kvm
+    devices:
+      - /dev/kvm:/dev/kvm
+
