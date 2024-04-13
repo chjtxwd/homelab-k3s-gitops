@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: deluge
+  name: deluge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: deluge
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/deluge-default: "true"
+        io.kompose.service: deluge
+    spec:
+      containers:
+        - env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          image: lscr.io/linuxserver/deluge:latest
+          name: deluge
+          ports:
+            - containerPort: 8112
+              hostPort: 8112
+              protocol: TCP
+            - containerPort: 6881
+              hostPort: 6881
+              protocol: TCP
+            - containerPort: 6881
+              hostPort: 6881
+              protocol: UDP
+            - containerPort: 58846
+              hostPort: 58846
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /config
+              name: deluge-claim0
+            - mountPath: /downloads
+              name: deluge-downloads
+      restartPolicy: Always
+      volumes:
+        - name: deluge-claim0
+          persistentVolumeClaim:
+            claimName: deluge-claim0
+        - name: deluge-claim1
+          persistentVolumeClaim:
+            claimName: deluge-claim1
+status: {}
