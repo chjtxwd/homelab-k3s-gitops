@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: android-container
+spec:
+  containers:
+  - name: android-container
+    image: budtmo/docker-android:emulator_11.0
+    ports:
+    - containerPort: 6080
+    env:
+    - name: EMULATOR_DEVICE
+      value: "Samsung Galaxy S10"
+    - name: WEB_VNC
+      value: "true"
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        cpu: "2"
+        memory: 4Gi
+    volumeDevices:
+    - name: devkvm
+      devicePath: /dev/kvm
+  volumes:
+  - name: devkvm
+    hostPath:
+      path: /dev/kvm
