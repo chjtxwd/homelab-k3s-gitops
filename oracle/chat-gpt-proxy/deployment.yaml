@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatgpt-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chatgpt-proxy
+  template:
+    metadata:
+      labels:
+        app: chatgpt
+    spec:
+      containers:
+      - name: chatgpt-container
+        image: pawanosman/chatgpt:latest
+        ports:
+        - containerPort: 3040
