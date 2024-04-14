@@ -28,7 +28,7 @@ spec:
       containers:
         - image: ghcr.io/chjtxwd/podsync:nightly
           name: podsync
-          command: ["/app/podsync", "-c", "/app/secret/config.toml"]
+          command: ["/app/podsync", "-c", "/app/config/config.toml"]  # Changed path to config file
           ports:
             - containerPort: 80
               protocol: TCP
@@ -36,7 +36,7 @@ spec:
           volumeMounts:
             - mountPath: /app/data
               name: podsync-claim0
-            - mountPath: /app/secret
+            - mountPath: /app/config  # Changed mount path for config file
               name: podsync-config
       restartPolicy: Always
       volumes:
@@ -44,6 +44,6 @@ spec:
           persistentVolumeClaim:
             claimName: podsync-claim0
         - name: podsync-config
-          secret:
-            secretName: podsync-config
+          configMap:
+            name: podsync-config  # Changed from secret to ConfigMap
 status: {}
