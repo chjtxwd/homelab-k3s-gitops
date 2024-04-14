@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: chatgpt-ingress
+spec:
+  rules:
+  - host: gpt.haijin666.top
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: chatgpt-service
+            port:
+              number: 80
