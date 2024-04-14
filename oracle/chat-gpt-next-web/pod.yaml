@@ -5,6 +5,8 @@ metadata:
 spec:
   containers:
   - name: chatgpt-container
+    labels:
+      app: chatgpt-next-web
     image: yidadaa/chatgpt-next-web
     ports:
     - containerPort: 3000
