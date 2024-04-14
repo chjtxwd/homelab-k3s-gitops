@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatgpt-deployment
+spec:
+  replicas: 1  # 设置需要的副本数量
+  selector:
+    matchLabels:
+      app: chatgpt-next-web
+  template:
+    metadata:
+      labels:
+        app: chatgpt-next-web
+    spec:
+      containers:
+      - name: chatgpt-container
+        image: yidadaa/chatgpt-next-web
+        ports:
+        - containerPort: 3000
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: chatgpt-secrets
+              key: OPENAI_API_KEY
+        - name: CODE
+          valueFrom:
+            secretKeyRef:
+              name: chatgpt-secrets
+              key: CODE
+        - name: BASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: chatgpt-secrets
+              key: BASE_URL
