@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: tailchat
+spec:
+  rules:
+  - host: tailchat.haijin666.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tailchat-service
+            port:
+              number: 11000
