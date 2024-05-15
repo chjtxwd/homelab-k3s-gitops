@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: HedgeDoc
+  namespace: HedgeDoc
+
+spec:
+  rules:
+    - host: HedgeDoc.haijin666.top
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  app
+                port:
+                  number: 3000

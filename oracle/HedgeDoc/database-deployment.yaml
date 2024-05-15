@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hedgedoc-default: "true"
+        io.kompose.service: database
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: hedgedoc
+            - name: POSTGRES_PASSWORD
+              value: password
+            - name: POSTGRES_USER
+              value: hedgedoc
+          image: postgres:13.4-alpine
+          name: database
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: database
+      restartPolicy: Always
+      volumes:
+        - name: database
+          persistentVolumeClaim:
+            claimName: database
+status: {}

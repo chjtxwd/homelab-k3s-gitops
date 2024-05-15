@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/hedgedoc-default: "true"
+        io.kompose.service: app
+    spec:
+      containers:
+        - env:
+            - name: CMD_DB_URL
+              value: postgres://hedgedoc:password@database:5432/hedgedoc
+            - name: CMD_DOMAIN
+              value: localhost
+            - name: CMD_URL_ADDPORT
+              value: "true"
+          image: quay.io/hedgedoc/hedgedoc:1.9.9
+          name: app
+          ports:
+            - containerPort: 3000
+              hostPort: 3000
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /hedgedoc/public/uploads
+              name: uploads
+      restartPolicy: Always
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: uploads
+status: {}
