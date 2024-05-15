@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: HedgeDoc
+  name: hedgedoc
 
 spec:
   rules:
-    - host: HedgeDoc.haijin666.top
+    - host: hedgedoc.haijin666.top
       http:
         paths:
           - path: /
