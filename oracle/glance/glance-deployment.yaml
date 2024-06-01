@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: glance
+  name: glance
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: glance
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/glance-default: "true"
+        io.kompose.service: glance
+    spec:
+      containers:
+        - image: glanceapp/glance
+          name: glance
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/glance.yml
+              name: glance-config
+              subPath: glance.yml
+      restartPolicy: Always
+      volumes:
+        - name: glance-config
+          configMap:
+            name: glance-config
