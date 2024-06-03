@@ -40,9 +40,14 @@ spec:
           volumeMounts:
             - mountPath: /ql/data
               name: web-claim0
+            - mountPath: /data
+              name: recorder-claim0
       restartPolicy: Always
       volumes:
         - name: web-claim0
           persistentVolumeClaim:
             claimName: web-claim0
+        - name: recorder-claim0
+          persistentVolumeClaim:
+            claimName: recorder-claim0
 status: {}
