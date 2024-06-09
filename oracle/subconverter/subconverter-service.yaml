@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: subconverter
+  name: subconverter
+spec:
+  ports:
+    - name: "15051"
+      port: 15051
+      targetPort: 25500
+  selector:
+    io.kompose.service: subconverter

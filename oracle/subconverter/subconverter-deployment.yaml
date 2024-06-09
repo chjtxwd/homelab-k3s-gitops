@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: subconverter
+  name: subconverter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: subconverter
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/subconverter-default: "true"
+        io.kompose.service: subconverter
+    spec:
+      containers:
+        - image: tindy2013/subconverter:latest
+          name: subconverter
+          ports:
+            - containerPort: 25500
+              hostPort: 15051
+              protocol: TCP
+      restartPolicy: Always
