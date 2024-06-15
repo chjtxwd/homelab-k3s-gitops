@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readeck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: readeck
+  template:
+    metadata:
+      labels:
+        app: readeck
+    spec:
+      containers:
+      - name: readeck
+        image: codeberg.org/readeck/readeck:latest
+        ports:
+        - containerPort: 8000
+      volumes:
+      - name: readeck-data
+        persistentVolumeClaim:
+          claimName: readeck-data-pvc
