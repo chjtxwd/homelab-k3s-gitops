@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: readeck-ingress
+spec:
+  rules:
+    - host: readeck.haijin666.top
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: readeck-service
+                port:
+                  number: 80
