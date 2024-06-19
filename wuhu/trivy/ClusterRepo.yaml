@@ -1,0 +1,6 @@
+apiVersion: catalog.cattle.io/v1
+kind: ClusterRepo
+metadata:
+  name: trivy
+spec:
+  url: https://aquasecurity.github.io/helm-charts/
