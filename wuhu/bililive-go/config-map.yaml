@@ -28,6 +28,9 @@ data:
     - url: https://live.douyin.com/zzai030
       is_listening: true
       quality: 0   
+    - url: https://live.douyin.com/65001189985
+      is_listening: true
+      quality: 0  
     - url: https://live.bilibili.com/26095888
       is_listening: true
       quality: 1   
