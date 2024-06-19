@@ -1,0 +1,9 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: grafana
+  namespace: grafana
+spec:
+  chart: grafana
+  targetNamespace: grafana
+  repo: https://grafana.github.io/helm-charts
