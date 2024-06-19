@@ -1,7 +1,9 @@
 mirrors:
   docker.io:
     endpoint:
-      - "docker.mirrors.sjtug.sjtu.edu.cn"
+      - "m.daocloud.io"
+    rewrite:
+      "(.*)": "docker.io/$1"
   quay.io:
     endpoint:
       - "m.daocloud.io"
