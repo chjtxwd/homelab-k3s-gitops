@@ -1,0 +1,8 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: trivy
+  namespace: trivy
+spec:
+  chart: trivy/trivy
+  targetNamespace: trivy
