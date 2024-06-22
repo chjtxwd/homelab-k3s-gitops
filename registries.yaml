@@ -1,0 +1,26 @@
+mirrors:
+    docker.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "docker.io/$1"
+    quay.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "quay.io/$1"
+    ghcr.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "ghcr.io/$1"
+    gcr.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "gcr.io/$1"
+    registry.k8s.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "registry.k8s.io/$1"
