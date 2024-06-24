@@ -1,3 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: prowlarr-claim0
+  name: prowlarr-claim0
+  namespace: prowlarr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
