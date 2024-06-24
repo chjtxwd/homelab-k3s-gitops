@@ -68,3 +68,44 @@ spec:
           persistentVolumeClaim:
             claimName: prowlarr-claim0
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.28.0 (c4137012e)
+    linkerd.io/inject: enabled
+  creationTimestamp: null
+  labels:
+    io.kompose.service: prowlarr
+  name: prowlarr
+  namespace: prowlarr
+spec:
+  ports:
+    - name: "9696"
+      port: 9696
+      targetPort: 9696
+  selector:
+    io.kompose.service: prowlarr
+status:
+  loadBalancer: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prowlarr
+  namespace: prowlarr
+
+spec:
+  rules:
+    - host: prowlarr.haijin666.top
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  prowlarr
+                port:
+                  number: 9696
