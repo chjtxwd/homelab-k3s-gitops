@@ -25,4 +25,3 @@ spec:
         image: niruix/sshwifty:latest
         ports:
         - containerPort: 8182
-        restartPolicy: Always
