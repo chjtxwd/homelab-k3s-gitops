@@ -1,0 +1,47 @@
+# Use Alpine as the base image
+FROM ubuntu
+
+# Create /app directory in the container
+RUN mkdir /app
+
+# Install dependencies
+RUN apt update && apt install -y wget tar bzip2
+
+# Download the specified model tar.bz2 file to /app directory
+RUN wget https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12.tar.bz2 -P /app
+
+# Extract the downloaded tar.bz2 file
+RUN tar -xvf /app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12.tar.bz2 -C /app
+
+# Remove the extracted tar.bz2 file
+RUN rm /app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12.tar.bz2
+
+# Determine the current CPU architecture and download the corresponding statically linked tar.bz2 file to /app directory
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then ARCH="x64"; fi && \
+    wget https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.10.11/sherpa-onnx-v1.10.11-linux-$ARCH-static.tar.bz2 -P /app
+
+# Extract the downloaded tar.bz2 file
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then ARCH="x64"; fi && \ 
+    tar -xvf /app/sherpa-onnx-v1.10.11-linux-$ARCH-static.tar.bz2 -C /app
+
+# Remove the extracted tar.bz2 file
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "x86_64" ]; then ARCH="x64"; fi && \ 
+    rm /app/sherpa-onnx-v1.10.11-linux-$ARCH-static.tar.bz2
+
+# Expose port 6006 for the WebSocket server
+EXPOSE 6006
+
+# Startup command for the WebSocket server
+CMD ["/app/sherpa-onnx-v1.10.11-linux-x64-static/bin/sherpa-onnx-offline-websocket-server", \
+  "--port=6006", \
+  "--max-utterance-length=3600",\
+  "--tokens=/app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12/tokens.txt", \
+  "--encoder=/app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12/encoder-epoch-20-avg-1-chunk-16-left-128.int8.onnx", \
+  "--decoder=/app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12/decoder-epoch-20-avg-1-chunk-16-left-128.int8.onnx", \
+  "--joiner=/app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12/joiner-epoch-20-avg-1-chunk-16-left-128.int8.onnx", \
+  "--log-file=/app/sherpa-onnx-streaming-zipformer-multi-zh-hans-2023-12-12/log.txt", \
+  "--max-batch-size=5"]
+
