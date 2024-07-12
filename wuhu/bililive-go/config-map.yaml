@@ -46,6 +46,12 @@ data:
     - url: https://live.bilibili.com/4195167
       is_listening: true
       quality: 1  
+    - url: https://live.douyin.com/34276715030
+      is_listening: true
+      quality: 1 
+    - url: https://live.bilibili.com/31215292
+      is_listening: true
+      quality: 1 
        
     out_put_tmpl: ""
     video_split_strategies:
