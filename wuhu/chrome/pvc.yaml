@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: chromium-pvc
+  namespace: chrome
 spec:
   accessModes:
     - ReadWriteOnce
