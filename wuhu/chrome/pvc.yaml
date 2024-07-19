@@ -4,6 +4,7 @@ metadata:
   name: chromium-pvc
   namespace: chrome
 spec:
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:
