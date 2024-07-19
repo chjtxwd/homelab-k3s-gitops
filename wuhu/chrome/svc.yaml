@@ -7,10 +7,12 @@ spec:
   selector:
     app: chromium
   ports:
-    - protocol: TCP
+    - name: '3000'
+      protocol: TCP
       port: 3000
       targetPort: 3000
-    - protocol: TCP
+    - name: '3001'
+      protocol: TCP
       port: 3001
       targetPort: 3001
   type: ClusterIP
