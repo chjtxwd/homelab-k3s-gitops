@@ -13,6 +13,10 @@ spec:
   selector:
     matchLabels:
       app: chromium
+  template:
+    metadata:
+      labels:
+        app: chromium
     spec:
       containers:
         - name: chromium
@@ -35,9 +39,6 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /config
-          securityContext:
-            seccompProfile:
-              type: Unconfined
       volumes:
         - name: config-volume
           persistentVolumeClaim:
@@ -45,7 +46,7 @@ spec:
       securityContext:
         seccompProfile:
           type: Unconfined
-      resources:
-        limits:
-          memory: "1Gi"
-          cpu: "1"
+  resources:
+    limits:
+      memory: "1Gi"
+      cpu: "1"
