@@ -13,10 +13,6 @@ spec:
   selector:
     matchLabels:
       app: chromium
-  template:
-    metadata:
-      labels:
-        app: chromium
     spec:
       containers:
         - name: chromium
