@@ -52,6 +52,9 @@ data:
     - url: https://live.bilibili.com/31215292
       is_listening: true
       quality: 1 
+    - url: https://live.bilibili.com/1319379
+      is_listening: true
+      quality: 1 
        
     out_put_tmpl: ""
     video_split_strategies:
