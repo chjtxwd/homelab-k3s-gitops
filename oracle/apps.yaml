@@ -1,11 +1,20 @@
-project: default
-source:
-  repoURL: 'https://github.com/chjtxwd/homelab-k3s-gitops'
-  path: oracle/argo-app
-  targetRevision: HEAD
-destination:
-  server: 'https://kubernetes.default.svc'
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod
   namespace: argo
-syncPolicy:
-  syncOptions:
-    - CreateNamespace=true
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: changedetection
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: oracle/argo-app
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      
