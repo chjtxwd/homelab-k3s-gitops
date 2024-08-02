@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openai-whisper-asr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openai-whisper-asr
+  template:
+    metadata:
+      labels:
+        app: openai-whisper-asr
+    spec:
+      containers:
+      - name: openai-whisper-asr
+        image: onerahmet/openai-whisper-asr-webservice:latest
+        ports:
+        - containerPort: 9000
+        env:
+        - name: ASR_MODEL
+          value: base
