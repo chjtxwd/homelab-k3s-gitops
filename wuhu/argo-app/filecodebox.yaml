@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: filecodebox
+  namespace: argo
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: filecodebox
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: wuhu/prod/filecodebox
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops

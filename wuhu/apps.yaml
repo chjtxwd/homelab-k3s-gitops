@@ -1,0 +1,11 @@
+project: default
+source:
+  repoURL: 'https://github.com/chjtxwd/homelab-k3s-gitops'
+  path: wuhu/argo-app
+  targetRevision: HEAD
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: argo
+syncPolicy:
+  syncOptions:
+    - CreateNamespace=true
