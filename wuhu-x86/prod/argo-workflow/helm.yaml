@@ -1,0 +1,9 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: argo-workflow
+  namespace: kube-system
+spec:
+  chart: argo-workflows
+  targetNamespace: argo
+  repo: https://argoproj.github.io/argo-helm

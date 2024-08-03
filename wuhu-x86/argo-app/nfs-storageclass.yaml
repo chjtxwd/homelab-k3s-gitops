@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-storageclass
+  namespace: argo
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: nfs-storageclass
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: wuhu-x86/prod/nfs-storageclass
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD
