@@ -1,28 +1,59 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  managedFields:
-    - apiVersion: argoproj.io/v1alpha1
   name: test
   namespace: bililive-go
 spec:
-  entrypoint: find-mp4-files
+  entrypoint: convert-mp4-to-mp3
   serviceAccountName: argo-workflow
-  templates:
-    - container:
-        args:
-          - find /mnt/bililive-go-pvc/哔哩哔哩/搞点基金文学 -type f -name "*.mp4" -exec sh -c 'ffmpeg -i "{}" "$(echo "{}" | sed "s/.mp4//").mp3"' \;
-        command:
-          - sh
-          - '-c'
-        image: linuxserver/ffmpeg
-        name: ''
-        resources: {}
-        volumeMounts:
-          - mountPath: /mnt/bililive-go-pvc
-            name: bililive-go-pvc
-      name: find-mp4-files
   volumes:
-    - name: bililive-go-pvc
-      persistentVolumeClaim:
-        claimName: bililive-go-pvc
+  - name: bililive-go-pvc
+    persistentVolumeClaim:
+      claimName: bililive-go-pvc
+  templates:
+  - name: convert-mp4-to-mp3
+    steps:
+    - - name: ffmpeg
+        template: ffmpeg
+    - - name: print-path
+        template: print-path
+        arguments:
+          parameters:
+          - name: mp3-path
+            value: "{{steps.ffmpeg.outputs.parameters.mp3-path}}"
+
+  - container:
+      args:
+        - find /mnt/bililive-go-pvc/哔哩哔哩/搞点基金文学 -type f -name "*.mp4" -exec sh -c 'ffmpeg -i "{}" "$(echo "{}" | sed "s/.mp4//").mp3" && echo "$(echo "{}" | sed "s/.mp4//").mp3" >> /tmp/mp3-path' \;
+      command:
+        - sh
+        - '-c'
+      image: linuxserver/ffmpeg
+      name: ''
+      resources: {}
+      volumeMounts:
+        - mountPath: /mnt/bililive-go-pvc
+          name: bililive-go-pvc
+    name: ffmpeg
+    outputs:
+      parameters:
+      - name: mp3-path
+        valueFrom:
+          path: /tmp/mp3-path
+
+  - name: print-path
+    inputs:
+      parameters:
+      - name: mp3-path
+    container:
+      image: curlimages/curl:latest
+      volumeMounts:
+        - mountPath: /mnt/bililive-go-pvc
+          name: bililive-go-pvc
+      command: [sh, -c]
+      args: ["curl -X 'POST' \
+          'http://192.168.2.221:9000/asr?encode=true&task=transcribe&language=zh&word_timestamps=false&output=srt' \
+          -H 'accept: application/json' \
+          -H 'Content-Type: multipart/form-data' \
+          -F 'audio_file=@{{inputs.parameters.mp3-path}};type=audio/mpeg'"]
+
