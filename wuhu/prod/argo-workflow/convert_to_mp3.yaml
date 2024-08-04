@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  managedFields:
+    - apiVersion: argoproj.io/v1alpha1
+  name: test
+  namespace: bililive-go
+spec:
+  entrypoint: find-mp4-files
+  serviceAccountName: argo-workflow
+  templates:
+    - container:
+        args:
+          - find /mnt/bililive-go-pvc/哔哩哔哩/搞点基金文学 -type f -name "*.mp4" -exec sh -c 'ffmpeg -i "{}" "$(echo "{}" | sed "s/.mp4//").mp3"' \;
+        command:
+          - sh
+          - '-c'
+        image: linuxserver/ffmpeg
+        name: ''
+        resources: {}
+        volumeMounts:
+          - mountPath: /mnt/bililive-go-pvc
+            name: bililive-go-pvc
+      name: find-mp4-files
+  volumes:
+    - name: bililive-go-pvc
+      persistentVolumeClaim:
+        claimName: bililive-go-pvc
