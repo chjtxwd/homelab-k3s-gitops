@@ -15,8 +15,8 @@ spec:
     steps:
     - - name: ffmpeg
         template: ffmpeg
-    - - name: print-path
-        template: print-path
+    - - name: call-whisper-api
+        template: call-whisper-api
         arguments:
           parameters:
           - name: mp3-path
@@ -41,7 +41,7 @@ spec:
         valueFrom:
           path: /tmp/mp3-path
 
-  - name: print-path
+  - name: call-whisper-api
     inputs:
       parameters:
       - name: mp3-path
@@ -55,5 +55,5 @@ spec:
           'http://192.168.2.221:9000/asr?encode=true&task=transcribe&language=zh&word_timestamps=false&output=srt' \
           -H 'accept: application/json' \
           -H 'Content-Type: multipart/form-data' \
-          -F 'audio_file=@{{inputs.parameters.mp3-path}};type=audio/mpeg'"]
+          -F 'audio_file=@\"{{inputs.parameters.mp3-path}}\";type=audio/mpeg' > \"{{inputs.parameters.mp3-path}}\".srt"]
 
