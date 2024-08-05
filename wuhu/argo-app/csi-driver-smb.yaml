@@ -11,5 +11,5 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: csi-driver-smb/
+    path: wuhu/prod/csi-driver-smb/
     repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
