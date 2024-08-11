@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: biliup
+  name: biliup
+spec:
+  ports:
+    - name: "http"
+      port: 19159
+      targetPort: 19159
+  selector:
+    io.kompose.service: biliup
