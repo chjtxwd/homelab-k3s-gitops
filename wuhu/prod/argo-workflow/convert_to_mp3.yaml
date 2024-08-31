@@ -5,6 +5,7 @@ metadata:
   namespace: bililive-go
 spec:
   schedule: "0 2 * * 1"
+  timezone: Asia/Shanghai
   workflowSpec:
     entrypoint: convert-mp4-to-mp3
     serviceAccountName: argo-workflow
@@ -53,8 +54,10 @@ spec:
           - mountPath: /mnt/bililive-go-pvc
             name: bililive-go-pvc
         command: [sh, -c]
-        args: ["curl -X 'POST' \
+        args: ["for path in {{inputs.parameters.mp3-paths}}; do \
+            curl -X 'POST' \
             'http://192.168.2.221:9000/asr?encode=true&task=transcribe&language=zh&word_timestamps=false&output=srt' \
             -H 'accept: application/json' \
             -H 'Content-Type: multipart/form-data' \
-            -F 'audio_file=@\"{{inputs.parameters.mp3-path}}\";type=audio/mpeg' > \"{{inputs.parameters.mp3-path}}\".srt"]
+            -F 'audio_file=@\"$path\";type=audio/mpeg' > \"$path.srt\"; \
+            done"]
