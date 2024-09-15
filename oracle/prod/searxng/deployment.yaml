@@ -17,9 +17,12 @@ spec:
           image: searxng/searxng
           ports:
             - containerPort: 8080
+          env:
+            - name: SEARXNG_SETTINGS_PATH
+              value: "/config/settings.yml"
           volumeMounts:
             - name: config-volume
-              mountPath: /etc/searxng
+              mountPath: /config
       volumes:
         - name: config-volume
           configMap:
