@@ -18,8 +18,11 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: SEARXNG_SETTINGS_PATH
-              value: "/config/settings.yml"
+            - name: SEARXNG_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: searxng-secret
+                  key: secret-key
           volumeMounts:
             - name: config-volume
               mountPath: /config
@@ -27,6 +30,9 @@ spec:
         - name: config-volume
           configMap:
             name: searxng-config
+        - name: secret-volume
+          secret:
+            secretName: searxng-secret
 ---
 
 apiVersion: v1
