@@ -23,6 +23,8 @@ spec:
                 secretKeyRef:
                   name: searxng-secret
                   key: secret-key
+            - name: SEARXNG_SETTINGS_PATH
+              value: "/config/settings.yml"
           volumeMounts:
             - name: config-volume
               mountPath: /config
