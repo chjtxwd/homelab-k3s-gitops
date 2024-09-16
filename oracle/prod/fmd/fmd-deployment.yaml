@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: fmd
+  name: fmd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: fmd
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f ./docker-compose.yaml
+        kompose.version: 1.33.0 (3ce457399)
+      labels:
+        io.kompose.network/fmd-default: "true"
+        io.kompose.service: fmd
+    spec:
+      containers:
+        - image: registry.gitlab.com/nulide/findmydeviceserver:v0.5.0
+          name: fmd
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /fmd/fmd.sqlite
+              name: fmd-claim0
+      restartPolicy: Always
+      volumes:
+        - name: fmd-claim0
+          persistentVolumeClaim:
+            claimName: fmd-claim0
