@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ./docker-compose.yaml
+    kompose.version: 1.33.0 (3ce457399)
+  labels:
+    io.kompose.service: qbittorrent
+  name: qbittorrent
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+    - name: "6881"
+      port: 6881
+      targetPort: 6881
+    - name: 6881-udp
+      port: 6881
+      protocol: UDP
+      targetPort: 6881
+  selector:
+    io.kompose.service: qbittorrent
