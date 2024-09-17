@@ -8,6 +8,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: uptime-kuma-pvc
   namespace: uptime
+  StorageClass: local-path
 spec:
   accessModes:
     - ReadWriteOnce
