@@ -222,6 +222,9 @@ spec:
             static_configs:
               - targets:
                   - 192.168.2.10:2112
+          - job_name: OpenWrt
+            static_configs:
+              - targets: [192.168.2.1:9100']
           - job_name: prometheus
             static_configs:
               - targets:
