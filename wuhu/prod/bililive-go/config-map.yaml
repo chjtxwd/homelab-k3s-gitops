@@ -45,9 +45,6 @@ data:
       quality: 1  
     - url: https://live.bilibili.com/4195167
       is_listening: true
-      quality: 1  
-    - url: https://live.douyin.com/34276715030
-      is_listening: true
       quality: 1 
     - url: https://live.bilibili.com/31215292
       is_listening: true
@@ -56,6 +53,12 @@ data:
       is_listening: true
       quality: 1 
     - url: https://live.bilibili.com/24791581
+      is_listening: true
+      quality: 1 
+    - url: https://live.douyin.com/39302225697
+      is_listening: true
+      quality: 1 
+    - url: https://live.bilibili.com/10535760
       is_listening: true
       quality: 1 
        
