@@ -218,6 +218,10 @@ spec:
           - /etc/config/rules
           - /etc/config/alerts
         scrape_configs:
+          - job_name: bililive-go
+            static_configs:
+              - targets:
+                  - bililive-go-service.bililive-go:8080
           - job_name: clash
             static_configs:
               - targets:
