@@ -2,7 +2,7 @@ apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
   name: prometheus
-  namespace: prometheus
+  namespace: kube-system
 spec:
   chart: prometheus
   targetNamespace: prometheus
@@ -219,6 +219,7 @@ spec:
           - /etc/config/alerts
         scrape_configs:
           - job_name: bililive-go
+            metrics_path: '/api/metrics'
             static_configs:
               - targets:
                   - bililive-go-service.bililive-go:8080
