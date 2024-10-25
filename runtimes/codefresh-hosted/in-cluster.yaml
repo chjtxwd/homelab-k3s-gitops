@@ -15,7 +15,7 @@ spec:
   source:
     directory:
       include: >-
-        {all-runtimes-all-clusters/*.yaml,all-runtimes-all-clusters/**/*.yaml,runtimes/codefresh-hosted/*.yaml,runtimes/codefresh-hosted/**/*.yaml,control-planes/*.yaml,control-planes/**/*.yaml,codefresh-hosted/codefresh-runtime-applications.yaml}
+        {all-runtimes-all-clusters/**/*.yaml,all-runtimes-all-clusters/*.yaml,codefresh-hosted/codefresh-runtime-applications.yaml,control-planes/**/*.yaml,control-planes/*.yaml,runtimes/codefresh-hosted/**/*.yaml,runtimes/codefresh-hosted/*.yaml}
       recurse: true
     path: resources
     repoURL: https://github.com/chjtxwd/homelab-k3s-gitops.git
