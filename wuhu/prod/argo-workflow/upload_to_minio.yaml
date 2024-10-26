@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: uploadtominio
+  namespace: bililive-go
+spec:
+  schedule: "0 7 * * *"
+  timezone: Asia/Shanghai
+  workflowSpec:
+    entrypoint: minio-upload
+    serviceAccountName: argo-workflow
+    templates:
+    - name: minio-upload
+      container:
+        image: minio/mc
+        command: ["/bin/sh", "-c"]
+        args: ["mc mv /data/*.mp4 minio/sync"]
+        env:
+        - name: MC_HOST_minio
+          valueFrom:
+            secretKeyRef:
+              name: minio-secret
+              key: MC_HOST_minio
+        volumeMounts:
+        - name: bililive-go-pvc
+          mountPath: /data
+      volumes:
+      - name: bililive-go-pvc
+        persistentVolumeClaim:
+          claimName: bililive-go-pvc
