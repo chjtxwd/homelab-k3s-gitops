@@ -14,7 +14,7 @@ spec:
       container:
         image: minio/mc
         command: ["/bin/sh", "-c"]
-        args: ["mc mv /data/*.mp4 minio/sync"]
+        args: ["mc mv /data/*/*/*.mp4 minio/sync"]
         env:
         - name: MC_HOST_minio
           valueFrom:
