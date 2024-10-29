@@ -12,7 +12,7 @@ spec:
     helm:
       releaseName: grafana
       valueFiles:
-        - wuhu/prod/grafana/values.yaml
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: grafana
