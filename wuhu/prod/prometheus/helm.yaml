@@ -5,14 +5,17 @@ metadata:
   namespace: argo
 spec:
   project: default
-  source:
-    chart: prometheus
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 25.28.0
-    helm:
-      releaseName: prometheus
-      valueFiles:
-        - values.yaml
+  sources:
+    - chart: prometheus
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 25.28.0
+      helm:
+        releaseName: prometheus
+        valueFiles:
+          - $values/wuhu/prod/prometheus/values.yaml
+    - repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: prometheus
