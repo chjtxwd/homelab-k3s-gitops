@@ -5,14 +5,17 @@ metadata:
   namespace: argo
 spec:
   project: default
-  source:
-    chart: grafana
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 8.5.8
-    helm:
-      releaseName: grafana
-      valueFiles:
-        - values.yaml
+  sources:
+    - chart: grafana
+      repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 8.5.8
+      helm:
+        releaseName: grafana
+        valueFiles:
+          - $values/wuhu/prod/grafana/values.yaml
+    - repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: grafana
