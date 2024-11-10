@@ -66,7 +66,6 @@ data:
     video_split_strategies:
       on_room_name_changed: false
       max_duration: 0s
-      max_file_size: 4096000000
     cookies: {}
     on_record_finished:
       convert_to_mp4: true
