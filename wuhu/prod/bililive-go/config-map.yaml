@@ -21,46 +21,46 @@ data:
     live_rooms:
     - url: https://live.douyin.com/95931337431
       is_listening: true
-      quality: 0
+      quality: 3
     - url: https://live.douyin.com/41064345870
       is_listening: true
-      quality: 0
+      quality: 3
     - url: https://live.douyin.com/zzai030
       is_listening: true
-      quality: 0   
+      quality: 3 
     - url: https://live.douyin.com/65001189985
       is_listening: true
-      quality: 0  
+      quality: 3 
     - url: https://live.bilibili.com/26095888
       is_listening: true
-      quality: 1   
+      quality: 3   
     - url: https://live.bilibili.com/21704593
       is_listening: true
-      quality: 1   
+      quality: 3 
     - url: https://live.bilibili.com/21903176
       is_listening: true
-      quality: 1   
+      quality: 3   
     - url: https://live.bilibili.com/22580654
       is_listening: true
-      quality: 1  
+      quality: 3  
     - url: https://live.bilibili.com/4195167
       is_listening: true
-      quality: 1 
+      quality: 3 
     - url: https://live.bilibili.com/31215292
       is_listening: true
-      quality: 1 
+      quality: 3 
     - url: https://live.bilibili.com/1319379
       is_listening: true
-      quality: 1 
+      quality: 3 
     - url: https://live.bilibili.com/24791581
       is_listening: true
-      quality: 1 
+      quality: 3 
     - url: https://live.douyin.com/87490980833
       is_listening: true
-      quality: 1 
+      quality: 3 
     - url: https://live.bilibili.com/10535760
       is_listening: true
-      quality: 1 
+      quality: 3 
        
     out_put_tmpl: ""
     video_split_strategies:
