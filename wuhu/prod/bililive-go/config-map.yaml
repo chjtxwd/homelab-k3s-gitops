@@ -33,6 +33,7 @@ data:
       quality: 3 
     - url: https://live.bilibili.com/26095888
       is_listening: true
+      audio_only: true
       quality: 3   
     - url: https://live.bilibili.com/21704593
       is_listening: true
