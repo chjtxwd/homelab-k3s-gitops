@@ -62,7 +62,12 @@ data:
     - url: https://live.bilibili.com/10535760
       is_listening: true
       quality: 3 
-       
+    - url: https://live.bilibili.com/279
+      is_listening: true
+      quality: 3 
+    - url: https://live.bilibili.com/689
+      is_listening: true
+      quality: 3 
     out_put_tmpl: ""
     video_split_strategies:
       on_room_name_changed: false
