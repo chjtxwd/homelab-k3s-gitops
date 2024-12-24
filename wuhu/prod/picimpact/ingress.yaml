@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: picimpact-ingress
+spec:
+  rules:
+  - host: picimpact.haijin666.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: picimpact
+            port:
+              number: 3000
