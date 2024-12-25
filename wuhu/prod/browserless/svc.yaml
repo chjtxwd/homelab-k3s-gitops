@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: browserless-chrome
+spec:
+  type: ClusterIP
+  selector:
+    app: browserless-chrome
+  ports:
+    - port: 3000
+      targetPort: 3000
