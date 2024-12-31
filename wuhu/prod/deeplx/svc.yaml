@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deeplx-serverless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deeplx-serverless
+  template:
+    metadata:
+      labels:
+        app: deeplx-serverless
+    spec:
+      containers:
+      - name: deeplx-serverless
+        image: ghcr.io/guobao2333/deeplx-serverless
+        ports:
+        - containerPort: 6119
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: deeplx-serverless
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6119
+    targetPort: 6119
+  selector:
+    app: deeplx-serverless
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deeplx-serverless-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: deeplx.haijin666.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: deeplx-serverless
+            port:
+              number: 6119
