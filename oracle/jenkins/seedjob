@@ -1,0 +1,109 @@
+
+          pipeline {
+            options {
+                timestamps ()
+            }
+            agent any
+            stages {
+                stage ("Checkout the Base Image repo") {
+                    steps {
+                        script {
+                            gitInfo = checkout([$class: 'GitSCM',
+                                branches: [[name: "*/master"]],
+                                doGenerateSubmoduleConfigurations: false,
+                                extensions: [[$class: 'CleanCheckout'],[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
+                                submoduleCfg: [],
+                                userRemoteConfigs: [[url: 'https://github.com/chjtxwd/homelab-k3s-gitops.git']]
+                            ])
+                        }
+                    }
+                }
+                stage ("Process JobDSL") {
+                    steps {
+                        sh "echo $WORKSPACE"
+                        jobDsl(
+                          removedJobAction: 'DISABLE',
+                          removedViewAction: 'DELETE',
+                          scriptText: """
+                            import groovy.io.FileType
+                            def jobsFolder = "$WORKSPACE/oracle/jenkins/jobs"
+                            def currentDir = new File(jobsFolder)
+                            def dirs = []
+                            currentDir.eachFile FileType.DIRECTORIES, {
+                              dirs = dirs << it.name
+                            }
+                            folder("investment") {
+                                displayName("investment")
+                                description('Folder for investment jobs')
+                            }
+                            dirs.each {
+                                def jobName = it
+                                multibranchPipelineJob("investment/\$jobName") {
+                                    branchSources {
+                                      branchSource {
+                                        source {
+                                          gitSCMSource {
+                                            remote('https://github.com/chjtxwd/homelab-k3s-gitops.git')
+                                            id("jcasc-deploy-\$jobName")
+                                            traits {
+                                                cloneOptionTrait {
+                                                extension {
+                                                shallow( true )
+                                                noTags(true)
+                                                depth(1)
+                                                reference('')
+                                                timeout(10)
+                                                }
+                                                }
+                                              }
+                                          }
+                                        }
+                                        buildStrategies {
+                                          buildAllBranches {
+                                            strategies {
+                                              buildNamedBranches {
+                                                filters {
+                                                  wildcards {
+                                                    includes('*')
+                                                    excludes('')
+                                                    caseSensitive(false)
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                    orphanedItemStrategy {
+                                      discardOldItems {
+                                        numToKeep(3)
+                                      }
+                                    }
+                                    triggers {
+                                      periodicFolderTrigger {
+                                        interval('1440')
+                                      }
+                                    }
+                                    configure { node ->
+                                      node / sources / data / 'jenkins.branch.BranchSource' / source / traits {
+                                        'jenkins.plugins.git.traits.BranchDiscoveryTrait'()
+                                        'jenkins.plugins.git.traits.CloneOptionTrait'{
+                                              extension( class: 'hudson.plugins.git.extensions.impl.CloneOption'){
+                                                  shallow(true)
+                                                  noTags(true)
+                                                  depth(1)
+                                                  timeout(10)
+                                              }
+                                        }  
+                                      }
+                                    }
+                                  }
+                                }
+                            """
+                          )
+                      }
+                  }
+              }
+          }
+        
