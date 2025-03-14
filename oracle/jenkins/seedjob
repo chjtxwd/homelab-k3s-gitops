@@ -9,7 +9,7 @@
                     steps {
                         script {
                             gitInfo = checkout([$class: 'GitSCM',
-                                branches: [[name: "*/master"]],
+                                branches: [[name: "*/main"]],
                                 doGenerateSubmoduleConfigurations: false,
                                 extensions: [[$class: 'CleanCheckout'],[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
                                 submoduleCfg: [],
