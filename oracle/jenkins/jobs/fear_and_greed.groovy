@@ -14,10 +14,6 @@ pipelineJob('fear-and-greed') {
             }
         }
     }
-    orphanedItemStrategy {
-        discardOldItems {
-            numToKeep(0)
-        }
     }
     steps {
         shell('echo "Building the project..."')
