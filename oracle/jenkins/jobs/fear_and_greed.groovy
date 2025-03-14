@@ -27,9 +27,9 @@ pipelineJob('fear-and-greed') {
                                       -H 'sec-ch-ua: "Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"' \\
                                       -H 'sec-ch-ua-mobile: ?0' \\
                                       -H 'sec-ch-ua-platform: "macOS"' -o result.json
-                                    score=$(cat result.json | jq .fear_and_greed.score)
-                                    rating=$(cat result.json | jq .fear_and_greed.rating)
-                                    curl -X POST -d "Fear and Greed Index Score: $score, Rating: $rating" https://ntfy.haijin666.top/haijin
+                                    score=\$(cat result.json | jq .fear_and_greed.score)
+                                    rating=\$(cat result.json | jq .fear_and_greed.rating)
+                                    curl -X POST -d "Fear and Greed Index Score: \$score, Rating: \$rating" https://ntfy.haijin666.top/haijin
                                 \"\"\"
                             }
                         }
