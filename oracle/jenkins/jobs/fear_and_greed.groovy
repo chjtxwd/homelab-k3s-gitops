@@ -14,7 +14,6 @@ pipelineJob('fear-and-greed') {
             }
         }
     }
-    }
     steps {
         shell('echo "Building the project..."')
         shell('pwd')
