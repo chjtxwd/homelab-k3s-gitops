@@ -20,7 +20,7 @@ pipelineJob('fear-and-greed') {
                         }
                         stage('Deploy') {
                             steps {
-                                echo 'Deploying..'
+                                sh 'curl https://production.dataviz.cnn.io/index/fearandgreed/graphdata'
                             }
                         }
                     }
