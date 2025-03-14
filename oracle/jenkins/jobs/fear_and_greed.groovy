@@ -2,21 +2,31 @@ pipelineJob('fear-and-greed') {
     displayName('fear-and-greed')
     description('fear-and-greed')
     definition {
-        cpsScm {
-            scm {
-                git {
-                    remote {
-                        url('https://github.com/chjtxwd/homelab-k3s-gitops')
+        cps {
+            script(
+                '''
+                pipeline {
+                    agent any
+                    stages {
+                        stage('Build') {
+                            steps {
+                                echo 'Building..'
+                            }
+                        }
+                        stage('Test') {
+                            steps {
+                                echo 'Testing..'
+                            }
+                        }
+                        stage('Deploy') {
+                            steps {
+                                echo 'Deploying..'
+                            }
+                        }
                     }
-                    branches('*/main')
-                    scriptPath('Jenkinsfile')
                 }
-            }
+                '''
+            )
         }
-    }
-    steps {
-        shell('echo "Building the project..."')
-        shell('pwd')
-        shell('ls -la')
     }
 }
