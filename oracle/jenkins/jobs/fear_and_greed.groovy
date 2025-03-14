@@ -17,4 +17,9 @@ multibranchPipelineJob('fear-and-greed') {
             'jenkins.plugins.git.traits.BranchDiscoveryTrait'()
         }
     }
+    steps {
+        shell('echo "Building the project..."')
+        shell('pwd')
+        shell('ls -la')
+    }
 }
