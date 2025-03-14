@@ -8,19 +8,11 @@ pipelineJob('fear-and-greed') {
                 pipeline {
                     agent any
                     stages {
-                        stage('Build') {
-                            steps {
-                                echo 'Building..'
-                            }
-                        }
-                        stage('Test') {
-                            steps {
-                                echo 'Testing..'
-                            }
-                        }
-                        stage('Deploy') {
+                        stage('Get fear and greed index') {
                             steps {
                                 sh \"\"\"
+                                    apt update
+                                    apt install -y jq curl
                                     curl 'https://production.dataviz.cnn.io/index/fearandgreed/graphdata' \\
                                       -H 'Accept: */*' \\
                                       -H 'Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7' \\
@@ -35,8 +27,9 @@ pipelineJob('fear-and-greed') {
                                       -H 'sec-ch-ua: "Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"' \\
                                       -H 'sec-ch-ua-mobile: ?0' \\
                                       -H 'sec-ch-ua-platform: "macOS"' -o result.json
-                                    cat result.json | jq .fear_and_greed.score
-                                    cat result.json | jq .fear_and_greed.rating
+                                    score=$(cat result.json | jq .fear_and_greed.score)
+                                    rating=$(cat result.json | jq .fear_and_greed.rating)
+                                    curl -X POST -d "Fear and Greed Index Score: $score, Rating: $rating" https://ntfy.haijin666.top/haijin
                                 \"\"\"
                             }
                         }
