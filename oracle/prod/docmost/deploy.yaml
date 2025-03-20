@@ -22,9 +22,9 @@ spec:
             - name: APP_SECRET
               value: "this_is_my_test_for_docmost_1234567890123456"
             - name: DATABASE_URL
-              value: "postgresql://docmost:STRONG_DB_PASSWORD@db:5432/docmost?schema=public"
+              value: "postgresql://docmost:STRONG_DB_PASSWORD@db.docmost.svc.cluster.local:5432/docmost?schema=public"
             - name: REDIS_URL
-              value: "redis://redis:6379"
+              value: "redis://redis.docmost.svc.cluster.local:6379"
           ports:
             - containerPort: 3000
           volumeMounts:
@@ -70,7 +70,6 @@ spec:
         - name: db-data
           persistentVolumeClaim:
             claimName: db-data-pvc
-
 ---
 apiVersion: apps/v1
 kind: Deployment
