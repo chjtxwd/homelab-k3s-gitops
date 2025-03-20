@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etherpad
+  namespace: etherpad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etherpad
+  template:
+    metadata:
+      labels:
+        app: etherpad
+    spec:
+      containers:
+      - name: etherpad
+        image: etherpad/etherpad:latest
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: ADMIN_PASSWORD
+          value: my_test_password
+        - name: DB_CHARSET
+          value: ${DOCKER_COMPOSE_APP_DB_CHARSET:-utf8mb4}
+        - name: DB_HOST
+          value: postgres
+        - name: DB_NAME
+          value: ${DOCKER_COMPOSE_POSTGRES_DATABASE:-etherpad}
+        - name: DB_PASS
+          value: ${DOCKER_COMPOSE_POSTGRES_PASSWORD:-admin}
+        - name: DB_PORT
+          value: ${DOCKER_COMPOSE_POSTGRES_PORT:-5432}
+        - name: DB_TYPE
+          value: "postgres"
+        - name: DB_USER
+          value: ${DOCKER_COMPOSE_POSTGRES_USER:-admin}
+        - name: DEFAULT_PAD_TEXT
+          value: ${DOCKER_COMPOSE_APP_DEFAULT_PAD_TEXT:- }
+        - name: DISABLE_IP_LOGGING
+          value: ${DOCKER_COMPOSE_APP_DISABLE_IP_LOGGING:-false}
+        - name: SOFFICE
+          value: ${DOCKER_COMPOSE_APP_SOFFICE:-null}
+        - name: TRUST_PROXY
+          value: ${DOCKER_COMPOSE_APP_TRUST_PROXY:-true}
+        ports:
+        - containerPort: 9001
+        volumeMounts:
+        - mountPath: /opt/etherpad-lite/src/plugin_packages
+          name: plugins
+        - mountPath: /opt/etherpad-lite/var
+          name: etherpad
