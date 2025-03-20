@@ -20,7 +20,7 @@ spec:
             - name: APP_URL
               value: "https://docmost.haijin666.top"
             - name: APP_SECRET
-              value: "REPLACE_WITH_LONG_SECRET"
+              value: "this_is_my_test"
             - name: DATABASE_URL
               value: "postgresql://docmost:STRONG_DB_PASSWORD@db:5432/docmost?schema=public"
             - name: REDIS_URL
