@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docmost
+  namespace: docmost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docmost
+  template:
+    metadata:
+      labels:
+        app: docmost
+    spec:
+      containers:
+        - name: docmost
+          image: docmost/docmost:latest
+          env:
+            - name: APP_URL
+              value: "https://docmost.haijin666.top"
+            - name: APP_SECRET
+              value: "REPLACE_WITH_LONG_SECRET"
+            - name: DATABASE_URL
+              value: "postgresql://docmost:STRONG_DB_PASSWORD@db:5432/docmost?schema=public"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: docmost-storage
+              mountPath: /app/data/storage
+      volumes:
+        - name: docmost-storage
+          persistentVolumeClaim:
+            claimName: docmost-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: docmost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: postgres:16-alpine
+          env:
+            - name: POSTGRES_DB
+              value: "docmost"
+            - name: POSTGRES_USER
+              value: "docmost"
+            - name: POSTGRES_PASSWORD
+              value: "STRONG_DB_PASSWORD"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-data-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: docmost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.2-alpine
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-data-pvc
