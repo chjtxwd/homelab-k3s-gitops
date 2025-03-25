@@ -47,7 +47,7 @@ pipelineJob('get-housing-price') {
                         }
                         stage('Get price') {
                             steps {
-                                sh 'python3 get_housing_price/get_price.py'
+                                sh 'python3 oracle/jenkins/jobs/get_housing_price/get_price.py'
                             }
                         }
                     }
