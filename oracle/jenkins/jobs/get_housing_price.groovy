@@ -13,13 +13,14 @@ pipelineJob('get-housing-price') {
                     stages {
                         stage('version') {
                         steps {
-                            sh 'python3 --version
-                            }
+                                sh 'python3 --version'
                             }
                         }
-                        stage('Get price'){
+                        stage('Get price') {
                             steps {
                                 sh 'python3 get_housing_price/get_price.py'
+                            }
+                        }
                     }
                 }
                 '''
