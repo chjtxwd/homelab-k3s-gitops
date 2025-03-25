@@ -11,7 +11,7 @@ pipelineJob('get-housing-price') {
                 pipeline {
                     agent any
                     stages {
-                        stage("Checkout the Base Image repo") {
+                        stage("Checkout the repo") {
                             steps {
                                 script {
                                     gitInfo = checkout([$class: 'GitSCM',
