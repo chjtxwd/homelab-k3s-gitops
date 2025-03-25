@@ -2,7 +2,7 @@ pipelineJob('get-housing-price') {
     displayName('get-housing-price')
     description('get-housing-price')
     triggers {
-        cron('0 10,22 * * *')
+        cron('H 10,22 * * *')
     }
     definition {
         cps {
@@ -11,8 +11,25 @@ pipelineJob('get-housing-price') {
                 pipeline {
                     agent any
                     stages {
+                        stage('Clone repository') {
+                            steps {
+                                sh """
+                                    apt update
+                                    apt install -y git
+                                    git clone --depth 1 https://github.com/chjtxwd/homelab-k3s-gitops.git
+                                """
+                            }
+                        }
+                        stage('install dependencies') {
+                            steps {
+                                sh """
+                                    apt update
+                                    apt install -y python3
+                                """
+                            }
+                        }
                         stage('version') {
-                        steps {
+                            steps {
                                 sh 'python3 --version'
                             }
                         }

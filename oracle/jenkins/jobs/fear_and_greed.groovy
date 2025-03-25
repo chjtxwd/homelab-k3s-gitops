@@ -2,7 +2,7 @@ pipelineJob('fear-and-greed') {
     displayName('fear-and-greed')
     description('fear-and-greed')
     triggers {
-        cron('0 10,22 * * *')
+        cron('H 10,22 * * *')
     }
     definition {
         cps {
