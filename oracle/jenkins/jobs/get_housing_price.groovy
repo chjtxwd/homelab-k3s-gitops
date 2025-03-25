@@ -11,13 +11,25 @@ pipelineJob('get-housing-price') {
                 pipeline {
                     agent any
                     stages {
-                        stage('Clone repository') {
+                        stage("Checkout the Base Image repo") {
                             steps {
-                                sh """
-                                    apt update
-                                    apt install -y git
-                                    git clone --depth 1 https://github.com/chjtxwd/homelab-k3s-gitops.git
-                                """
+                                script {
+                                    gitInfo = checkout([$class: 'GitSCM',
+                                        branches: [[name: "*/main"]],
+                                        doGenerateSubmoduleConfigurations: false,
+                                        extensions: [
+                                            [$class: 'CleanCheckout'],
+                                            [$class: 'CloneOption',
+                                                depth: 1,
+                                                noTags: true,
+                                                reference: '',
+                                                shallow: true
+                                            ]
+                                        ],
+                                        submoduleCfg: [],
+                                        userRemoteConfigs: [[url: 'https://github.com/chjtxwd/homelab-k3s-gitops.git']]
+                                    ])
+                                }
                             }
                         }
                         stage('install dependencies') {
