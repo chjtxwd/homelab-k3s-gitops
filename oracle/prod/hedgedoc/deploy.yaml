@@ -51,13 +51,13 @@ spec:
           - name: CMD_DB_URL
             value: postgres://hedgedoc:password@database:5432/hedgedoc
           - name: CMD_DOMAIN
-            value: localhost
+            value: "hedgedoc.haijin666.top"
           - name: CMD_URL_ADDPORT
             value: "true"
           - name: CMD_HOST
             value: "hedgedoc.haijin666.top"
           - name: CMD_PROTOCOL_USESSL
-            value: true
+            value: "true"
         volumeMounts:
           - mountPath: /hedgedoc/public/uploads
             name: uploads-storage
