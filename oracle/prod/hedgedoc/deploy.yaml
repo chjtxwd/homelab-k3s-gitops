@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13.4-alpine
+        env:
+          - name: POSTGRES_USER
+            value: hedgedoc
+          - name: POSTGRES_PASSWORD
+            value: password
+          - name: POSTGRES_DB
+            value: hedgedoc
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: database-storage
+      volumes:
+        - name: database-storage
+          persistentVolumeClaim:
+            claimName: database-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hedgedoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hedgedoc
+  template:
+    metadata:
+      labels:
+        app: hedgedoc
+    spec:
+      containers:
+      - name: hedgedoc
+        image: quay.io/hedgedoc/hedgedoc:1.10.2
+        env:
+          - name: CMD_DB_URL
+            value: postgres://hedgedoc:password@database:5432/hedgedoc
+          - name: CMD_DOMAIN
+            value: localhost
+          - name: CMD_URL_ADDPORT
+            value: "true"
+        volumeMounts:
+          - mountPath: /hedgedoc/public/uploads
+            name: uploads-storage
+      volumes:
+        - name: uploads-storage
+          emptyDir: {} # Alternatively, create a PersistentVolumeClaim for uploads if needed
