@@ -1,0 +1,108 @@
+summary: ""
+description: ""
+value:
+  modules:
+    - id: d
+      value:
+        type: forloopflow
+        modules:
+          - id: e
+            retry:
+              constant:
+                seconds: 5
+                attempts: 5
+              exponential:
+                seconds: 0
+                attempts: 0
+                multiplier: 1
+                random_factor: null
+            value:
+              path: u/chjtxwd/get_raw
+              type: script
+              is_trigger: false
+              input_transforms:
+                url:
+                  expr: flow_input.iter.value.url
+                  type: javascript
+                  value: ${flow_input.iter.value.city}
+                city:
+                  expr: flow_input.iter.value.city
+                  type: javascript
+                  value: ${flow_input.iter.value.url}
+            timeout: 300
+            continue_on_error: false
+          - id: f
+            retry:
+              constant:
+                seconds: 5
+                attempts: 5
+              exponential:
+                seconds: 0
+                attempts: 0
+                multiplier: 1
+                random_factor: null
+            value:
+              path: u/chjtxwd/parse_html
+              type: script
+              is_trigger: false
+              input_transforms:
+                city:
+                  expr: "`${flow_input.iter.value.city}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.city}
+                html:
+                  expr: "`${results.e.content}`"
+                  type: javascript
+                  value: ${results.e.content}
+            continue_on_error: false
+          - id: g
+            retry:
+              constant:
+                seconds: 5
+                attempts: 5
+              exponential:
+                seconds: 0
+                attempts: 0
+                multiplier: 1
+                random_factor: null
+            value:
+              path: u/chjtxwd/send_to_influxdb
+              type: script
+              is_trigger: false
+              input_transforms:
+                json:
+                  expr: results.f.data
+                  type: javascript
+                  value: null
+                influx_token:
+                  expr: "`${variable('u/chjtxwd/influxdb_ershoufang_token')}`"
+                  type: javascript
+                  value: ${variable('u/chjtxwd/influxdb_ershoufang_token')}
+                influx_bucket:
+                  type: static
+                  value: 二手房
+            continue_on_error: false
+        iterator:
+          expr: |-
+            [
+                {"city": "南京", "url": "https://m.anjuke.com/nj/trendency/"},
+                {"city": "上海", "url": "https://m.anjuke.com/sh/trendency/"},
+                {"city": "武汉", "url": "https://m.anjuke.com/wh/trendency/"},
+                {"city": "芜湖", "url": "https://m.anjuke.com/wuh/trendency/"},
+                {"city": "大连", "url": "https://m.anjuke.com/dl/trendency/"},
+                {"city": "鹤岗", "url": "https://m.anjuke.com/heg/trendency/"},
+                {"city": "沈阳", "url": "https://m.anjuke.com/shen/trendency/"},
+                {"city": "成都", "url": "https://m.anjuke.com/cd/trendency/"},
+                {"city": "杭州", "url": "https://m.anjuke.com/hz/trendency/"},
+                {"city": "深圳", "url": "https://m.anjuke.com/sz/trendency/"},
+            ]
+          type: javascript
+        parallel: true
+        parallelism: 2
+        skip_failures: true
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  properties: {}
+  required: []
+  type: object
+  order: []
