@@ -14,7 +14,7 @@ export async function main(
     city: string,
 ) {
     const browser = await puppeteer.connect({
-        browserWSEndpoint: 'ws://192.168.2.72:3000',
+        browserWSEndpoint: 'ws://browserless-chrome.browserless.svc.cluster.local:3000',
     });
 
     try {
