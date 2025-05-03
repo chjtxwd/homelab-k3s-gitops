@@ -1,0 +1,106 @@
+summary: ""
+description: ""
+value:
+  modules:
+    - id: d
+      value:
+        type: forloopflow
+        modules:
+          - id: e
+            retry:
+              constant:
+                seconds: 0
+                attempts: 0
+              exponential:
+                seconds: 60
+                attempts: 1
+                multiplier: 5
+                random_factor: 0
+            value:
+              path: u/chjtxwd/get_html_vg
+              type: script
+              is_trigger: false
+              input_transforms:
+                url:
+                  expr: "`${flow_input.iter.value.url}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.url}
+                province:
+                  expr: "`${flow_input.iter.value.province}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.province}
+                vegetable:
+                  expr: "`${flow_input.iter.value.vegetable}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.vegetable}
+            continue_on_error: true
+          - id: f
+            value:
+              path: u/chjtxwd/parse_html_vg
+              type: script
+              is_trigger: false
+              input_transforms:
+                html:
+                  expr: "`${results.e.quotations}`"
+                  type: javascript
+                  value: ${results.e.quotations}
+                province:
+                  expr: "`${flow_input.iter.value.province}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.province}
+                vegetable:
+                  expr: "`${flow_input.iter.value.vegetable}`"
+                  type: javascript
+                  value: ${flow_input.iter.value.vegetable}
+          - id: g
+            value:
+              path: u/chjtxwd/send_to_influxdb
+              type: script
+              is_trigger: false
+              input_transforms:
+                json:
+                  expr: results.f.data
+                  type: javascript
+                  value: null
+                influx_token:
+                  expr: "`${variable('u/chjtxwd/dignified_variable')}`"
+                  type: javascript
+                  value: ${variable('u/chjtxwd/dignified_variable')}
+                influx_bucket:
+                  type: static
+                  value: 物价
+        iterator:
+          expr: >-
+            [
+                {"province": "安徽","vegetable": "白菜", "url": "https://www.cnhnb.com/hangqing/cdlist-2001792-0-12-0-0-1/"},
+                {"province": "安徽","vegetable": "南瓜", "url": "https://www.cnhnb.com/hangqing/cdlist-2001233-0-12-0-0-1/"},
+                {"province": "江苏","vegetable": "白菜", "url": "https://www.cnhnb.com/hangqing/cdlist-2001792-0-10-0-0-1/"},
+                {"province": "浙江","vegetable": "草鱼", "url": "https://www.cnhnb.com/hangqing/cdlist-2001424-0-11-0-0-1/"},
+                {"province": "陕西","vegetable": "苹果", "url": "https://www.cnhnb.com/hangqing/cdlist-2001636-0-27-0-0-1/"},
+
+            ]
+          type: javascript
+        parallel: false
+        skip_failures: true
+  failure_module:
+    id: failure
+    value:
+      hash: null
+      path: u/chjtxwd/send_error_message
+      type: script
+      is_trigger: false
+      input_transforms:
+        name:
+          expr: error.name
+          type: javascript
+        message:
+          expr: error.message
+          type: javascript
+        step_id:
+          expr: error.step_id
+          type: javascript
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  properties: {}
+  required: []
+  type: object
