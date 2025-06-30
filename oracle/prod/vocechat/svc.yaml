@@ -16,6 +16,9 @@ spec:
       containers:
       - name: vocechat-server
         image: privoce/vocechat-server:latest-arm64
+        args:
+        - --network.frontend_url
+        - "https://vocechat.haijin666.top"
         ports:
         - containerPort: 3000
 ---
