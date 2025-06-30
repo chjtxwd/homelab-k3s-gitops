@@ -18,7 +18,6 @@ spec:
         image: privoce/vocechat-server:latest-arm64
         ports:
         - containerPort: 3000
-        restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
