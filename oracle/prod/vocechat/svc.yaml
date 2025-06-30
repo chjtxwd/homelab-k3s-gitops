@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vocechat-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vocechat-server
+  template:
+    metadata:
+      labels:
+        app: vocechat-server
+    spec:
+      containers:
+      - name: vocechat-server
+        image: privoce/vocechat-server:latest-arm64
+        ports:
+        - containerPort: 3000
+        restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vocechat-server
+spec:
+  selector:
+    app: vocechat-server
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+  type: ClusterIP
