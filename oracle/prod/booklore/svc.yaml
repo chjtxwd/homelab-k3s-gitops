@@ -17,11 +17,9 @@ metadata:
   name: booklore
   namespace: booklore
 spec:
-  type: NodePort
   selector:
     app: booklore
   ports:
     - protocol: TCP
       port: 6060
       targetPort: 6060
-      nodePort: 30060
