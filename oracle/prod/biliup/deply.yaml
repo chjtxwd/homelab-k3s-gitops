@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biliup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: biliup
+  template:
+    metadata:
+      labels:
+        app: biliup
+    spec:
+      containers:
+      - name: biliup
+        image: ghcr.io/biliup/caution:latest
+        args:
+          - "--password"
+          - "$(BILIUP_PASSWORD)"
+        env:
+        - name: BILIUP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: biliup-secret
+              key: password
+        ports:
+        - containerPort: 19159
+        volumeMounts:
+        - mountPath: /opt
+          name: storage
+          volumes:
+          - name: storage
+            persistentVolumeClaim:
+              claimName: biliup-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: biliup-service
+spec:
+  selector:
+    app: biliup
+  ports:
+    - protocol: TCP
+      port: 19159
+      targetPort: 19159
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: biliup-ingress
+spec:
+  rules:
+    - host: biliup.haijin666.top
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: biliup-service
+                port:
+                  number: 19159
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: biliup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
