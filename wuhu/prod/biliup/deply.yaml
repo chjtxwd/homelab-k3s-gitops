@@ -26,13 +26,13 @@ spec:
               key: password
         ports:
         - containerPort: 19159
-        volumeMounts:
-        - mountPath: /opt
-          name: storage
-          volumes:
-          - name: storage
-            persistentVolumeClaim:
-              claimName: biliup-pvc
+          volumeMounts:
+          - mountPath: /opt
+            name: storage
+        volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: biliup-pvc
 ---
 apiVersion: v1
 kind: Service
