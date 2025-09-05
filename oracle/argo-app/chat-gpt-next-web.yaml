@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: chat-gpt-next-web
-  namespace: argo
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
