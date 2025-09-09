@@ -1,0 +1,45 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: kanboard
+  namespace: kube-system
+spec:
+  repo: https://blog.haijin666.top/kanboard-helm
+  chart: kanboard
+  targetNamespace: kanboard
+  valuesContent: |-
+      application:
+        additionalLabels: {}
+        persistence:
+          enabled: true
+          persistentVolumeClaim:
+            accessMode: ReadWriteOnce
+            create: true
+            name: kanboard-pvc
+            size: 5Gi
+            storageClass: local-path
+        port: 80
+      clusterip:
+        enabled: false
+        port: 8080
+      image:
+        pullPolicy: IfNotPresent
+        registry: docker.io
+        repository: kanboard/kanboard
+        tag: latest
+      ingress:
+        annotations: {}
+        enabled: true
+        host: kanboard.haijin666.top
+        ingressClassName: traefik
+        tls: null
+      nodePort:
+        enabled: false
+        port: null
+      resources: null
+      securityContext:
+        container: null
+        pod: null
+      env:
+        - name: PLUGIN_INSTALLER
+          value: 'true'
