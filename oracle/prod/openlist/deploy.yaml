@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openlist
+  labels:
+    app: openlist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openlist
+  template:
+    metadata:
+      labels:
+        app: openlist
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+      - name: openlist
+        image: openlistteam/openlist:latest
+        ports:
+        - containerPort: 5244
+        env:
+        - name: UMASK
+          value: "022"
+        volumeMounts:
+        - name: data-volume
+          mountPath: /opt/openlist/data
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: openlist-pvc
+      restartPolicy: Always
