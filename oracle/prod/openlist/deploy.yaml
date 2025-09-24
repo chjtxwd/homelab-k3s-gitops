@@ -19,7 +19,7 @@ spec:
         runAsGroup: 0
       containers:
       - name: openlist
-        image: openlistteam/openlist:latest
+        image: ghcr.io/openlistteam/openlist-git:latest
         ports:
         - containerPort: 5244
         env:
