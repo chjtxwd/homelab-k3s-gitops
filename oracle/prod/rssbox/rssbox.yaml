@@ -31,6 +31,8 @@ spec:
           value: "8000"
         - name: DEBUG
           value: "0"
+        - name: CSRF_TRUSTED_ORIGINS
+          value: "https://rssbox.haijin666.top"
         - name: DEMO
           value: "0"
         - name: USER_MANAGEMENT
