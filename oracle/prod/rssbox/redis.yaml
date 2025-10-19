@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rssbox-redis
+  namespace: rssbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rssbox-redis
+  template:
+    metadata:
+      labels:
+        app: rssbox-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rssbox-redis
+  namespace: rssbox
+spec:
+  selector:
+    app: rssbox-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP

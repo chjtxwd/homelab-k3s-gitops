@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rssbox-ingress
+  namespace: rssbox
+spec:
+  rules:
+  - host: rssbox.haijin666.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: rssbox
+            port:
+              number: 8000
