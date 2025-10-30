@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bililive-tools
+  namespace: argocd
+spec:
+  destination:
+    namespace: bililive-tools
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: wuhu/prod/bililive-tools
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD
