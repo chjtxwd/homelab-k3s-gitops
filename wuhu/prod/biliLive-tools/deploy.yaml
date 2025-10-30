@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bililive-tools-frontend
+  namespace: bililive-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bililive-tools-frontend
+  template:
+    metadata:
+      labels:
+        app: bililive-tools-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: renmu1234/bililive-tools-frontend
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bililive-tools-frontend-service
+  namespace: bililive-tools
+spec:
+  selector:
+    app: bililive-tools-frontend
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bililive-tools-backend
+  namespace: bililive-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bililive-tools-backend
+  template:
+    metadata:
+      labels:
+        app: bililive-tools-backend
+    spec:
+      containers:
+      - name: backend
+        image: renmu1234/bililive-tools-backend
+        ports:
+        - containerPort: 18010
+        env:
+        - name: BILILIVE_TOOLS_PASSKEY
+          value: "your_passkey"
+        - name: BILILIVE_TOOLS_BILIKEY
+          value: "your_bilikey"
+        - name: TZ
+          value: "Asia/Shanghai"
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: video-volume
+          mountPath: /app/video
+        - name: fonts-volume
+          mountPath: /usr/local/share/fonts
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+        volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-pvc
+        - name: video-volume
+          persistentVolumeClaim:
+            claimName: video-pvc
+        - name: fonts-volume
+          persistentVolumeClaim:
+            claimName: fonts-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bililive-tools-backend-service
+  namespace: bililive-tools
+spec:
+  selector:
+    app: bililive-tools-backend
+  ports:
+  - port: 18010
+    targetPort: 18010
+  type: ClusterIP
