@@ -68,13 +68,13 @@ spec:
           value: "your_bilikey"
         - name: TZ
           value: "Asia/Shanghai"
-        volumeMounts:
-        - name: data-volume
-          mountPath: /app/data
-        - name: video-volume
-          mountPath: /app/video
-        - name: fonts-volume
-          mountPath: /usr/local/share/fonts
+          volumeMounts:
+          - name: data-volume
+            mountPath: /app/data
+          - name: video-volume
+            mountPath: /app/video
+          - name: fonts-volume
+            mountPath: /usr/local/share/fonts
           resources:
             requests:
               memory: "256Mi"
