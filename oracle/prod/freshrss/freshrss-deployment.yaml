@@ -34,8 +34,7 @@ spec:
             - |
               mkdir -p /config/www/freshrss/extensions && \
               curl -L -o /tmp/TranslateTitlesCN.zip https://github.com/yarin-zhang/FreshRSS-TranslateTitlesCN/releases/download/v0.3.1/TranslateTitlesCN.zip && \
-              mv /tmp/TranslateTitlesCN.zip /config/www/freshrss/extensions/TranslateTitlesCN.zip && \
-              rm /tmp/TranslateTitlesCN.zip
+              mv /tmp/TranslateTitlesCN.zip /config/www/freshrss/extensions/TranslateTitlesCN.zip
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
