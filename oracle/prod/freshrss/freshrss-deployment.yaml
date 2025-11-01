@@ -25,6 +25,20 @@ spec:
         io.kompose.network/freshrss-default: "true"
         io.kompose.service: freshrss
     spec:
+      initContainers:
+        - name: download-extension
+          image: curlimages/curl:latest
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /config/www/freshrss/extensions && \
+              curl -L -o /tmp/TranslateTitlesCN.zip https://github.com/yarin-zhang/FreshRSS-TranslateTitlesCN/releases/download/v0.3.1/TranslateTitlesCN.zip && \
+              unzip /tmp/TranslateTitlesCN.zip -d /config/www/freshrss/extensions && \
+              rm /tmp/TranslateTitlesCN.zip
+          volumeMounts:
+            - mountPath: /config
+              name: freshrss-claim0
       containers:
         - env:
             - name: PGID
