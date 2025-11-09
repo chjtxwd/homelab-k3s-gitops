@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: qinglong
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: qinglong
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: oracle/prod/qinglong
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD
