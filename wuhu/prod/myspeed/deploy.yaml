@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myspeed
+  labels:
+    app: myspeed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myspeed
+  template:
+    metadata:
+      labels:
+        app: myspeed
+    spec:
+      containers:
+      - name: myspeed
+        image: germannewsmaker/myspeed
+        ports:
+        - containerPort: 5216
+        volumeMounts:
+        - name: myspeed-data
+          mountPath: /myspeed/data
+        restartPolicy: Always
+      volumes:
+      - name: myspeed-data
+        persistentVolumeClaim:
+          claimName: myspeed-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myspeed-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

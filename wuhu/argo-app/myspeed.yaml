@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myspeed
+  namespace: argocd
+spec:
+  destination:
+    namespace: myspeed
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: wuhu/prod/myspeed
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD
