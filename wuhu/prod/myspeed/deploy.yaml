@@ -22,7 +22,6 @@ spec:
         volumeMounts:
         - name: myspeed-data
           mountPath: /myspeed/data
-        restartPolicy: Always
       volumes:
       - name: myspeed-data
         persistentVolumeClaim:
