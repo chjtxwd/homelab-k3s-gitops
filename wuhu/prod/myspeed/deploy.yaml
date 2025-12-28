@@ -28,6 +28,44 @@ spec:
           claimName: myspeed-pvc
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: myspeed
+  labels:
+    app: myspeed
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5216
+    protocol: TCP
+  selector:
+    app: myspeed
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myspeed
+  labels:
+    app: myspeed
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: myspeed.haijin666.top
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: myspeed
+            port:
+              number: 80
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: myspeed-pvc
