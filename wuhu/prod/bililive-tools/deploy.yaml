@@ -68,20 +68,20 @@ spec:
           value: "your_bilikey"
         - name: TZ
           value: "Asia/Shanghai"
-          volumeMounts:
-          - name: data-volume
-            mountPath: /app/data
-          - name: video-volume
-            mountPath: /app/video
-          - name: fonts-volume
-            mountPath: /usr/local/share/fonts
-          resources:
-            requests:
-              memory: "256Mi"
-              cpu: "200m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+        - name: video-volume
+          mountPath: /app/video
+        - name: fonts-volume
+          mountPath: /usr/local/share/fonts
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
   ---
   apiVersion: v1
   kind: PersistentVolumeClaim
