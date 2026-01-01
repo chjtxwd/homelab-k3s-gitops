@@ -38,9 +38,7 @@ spec:
   - port: 3000
     targetPort: 3000
   type: ClusterIP
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -56,6 +54,16 @@ spec:
       labels:
         app: bililive-tools-backend
     spec:
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc
+      - name: video-volume
+        persistentVolumeClaim:
+          claimName: video-pvc
+      - name: fonts-volume
+        persistentVolumeClaim:
+          claimName: fonts-pvc
       containers:
       - name: backend
         image: renmu1234/bililive-tools-backend
@@ -82,42 +90,42 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-  ---
-  apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: data-pvc
-    namespace: bililive-tools
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-pvc
+  namespace: bililive-tools
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
     requests:
       storage: 10Gi
-  ---
-  apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: video-pvc
-    namespace: bililive-tools
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: video-pvc
+  namespace: bililive-tools
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
     requests:
       storage: 10Gi
-  ---
-  apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: fonts-pvc
-    namespace: bililive-tools
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fonts-pvc
+  namespace: bililive-tools
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
     requests:
-                storage: 100Mi
+      storage: 100Mi
 ---
 apiVersion: v1
 kind: Service
