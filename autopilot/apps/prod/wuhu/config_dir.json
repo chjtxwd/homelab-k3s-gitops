@@ -1,0 +1,13 @@
+{
+  "appName": "prod",
+  "userGivenName": "prod",
+  "destNamespace": "default",
+  "destServer": "https://kubernetes.default.svc",
+  "srcPath": "wuhu/argo-app",
+  "srcRepoURL": "https://github.com/chjtxwd/homelab-k3s-gitops.git",
+  "srcTargetRevision": "",
+  "labels": null,
+  "annotations": null,
+  "exclude": "",
+  "include": ""
+}
