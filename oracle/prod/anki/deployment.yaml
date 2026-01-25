@@ -24,12 +24,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: anki-sync-server-secret
-              key: username
-        - name: SYNC_PASS1
-          valueFrom:
-            secretKeyRef:
-              name: anki-sync-server-secret
-              key: password
+              key: user
         volumeMounts:
         - name: anki-data
           mountPath: /anki_data
