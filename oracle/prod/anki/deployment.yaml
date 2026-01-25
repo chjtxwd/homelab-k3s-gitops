@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anki-sync-server
+  labels:
+    app: anki-sync-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anki-sync-server
+  template:
+    metadata:
+      labels:
+        app: anki-sync-server
+    spec:
+      containers:
+      - name: anki-sync-server
+        image: afrima/anki-sync-server
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SYNC_USER1
+          valueFrom:
+            secretKeyRef:
+              name: anki-sync-server-secret
+              key: username
+        - name: SYNC_PASS1
+          valueFrom:
+            secretKeyRef:
+              name: anki-sync-server-secret
+              key: password
+        volumeMounts:
+        - name: anki-data
+          mountPath: /anki_data
+      volumes:
+      - name: anki-data
+        persistentVolumeClaim:
+          claimName: anki-sync-server-data
