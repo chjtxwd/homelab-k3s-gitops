@@ -11,3 +11,7 @@ spec:
   source:
     path: csi-driver-nfs/
     repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -12,3 +12,7 @@ spec:
     path: wuhu/prod/nfs-storageclass
     repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
     targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
