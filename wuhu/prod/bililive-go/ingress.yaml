@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bililive-ingress
+spec:
+  rules:
+    - host: record.haijin666.top
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bililive-go-service
+                port:
+                  number: 8080
