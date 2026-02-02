@@ -19,6 +19,11 @@ mirrors:
         - "http://reg.haijin666.top"
       rewrite:
         "(.*)": "gcr.io/$1"
+    lscr.io:
+      endpoint:
+        - "http://reg.haijin666.top"
+      rewrite:
+        "(.*)": "lscr.io/$1"
     registry.k8s.io:
       endpoint:
         - "http://reg.haijin666.top"
