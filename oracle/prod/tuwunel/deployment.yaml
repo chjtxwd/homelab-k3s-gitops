@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tuwunel
+  labels:
+    app: tuwunel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tuwunel
+  template:
+    metadata:
+      labels:
+        app: tuwunel
+    spec:
+      containers:
+        - name: tuwunel
+          image: ghcr.io/matrix-construct/tuwunel:latest
+          ports:
+            - containerPort: 6167
+          env:
+            - name: TUWUNEL_SERVER_NAME
+              value: tuwunel.haijin666.top
+            - name: TUWUNEL_DATABASE_PATH
+              value: /var/lib/tuwunel
+            - name: TUWUNEL_PORT
+              value: '6167'
+            - name: TUWUNEL_MAX_REQUEST_SIZE
+              value: '20000000'
+            - name: TUWUNEL_ALLOW_REGISTRATION
+              value: 'true'
+            - name: TUWUNEL_REGISTRATION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: tuwunel-secret
+                  key: registration-token
+            - name: TUWUNEL_ALLOW_FEDERATION
+              value: 'true'
+            - name: TUWUNEL_TRUSTED_SERVERS
+              value: '["matrix.org"]'
+            - name: TUWUNEL_ADDRESS
+              value: 0.0.0.0
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/tuwunel
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: tuwunel-pvc
