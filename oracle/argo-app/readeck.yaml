@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: readeck
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: readeck
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: oracle/prod/readeck
+    repoURL: https://github.com/chjtxwd/homelab-k3s-gitops
+    targetRevision: HEAD

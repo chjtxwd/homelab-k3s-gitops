@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: ./kompose convert -f ./docker-compose.yml
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: readeck
+  name: readeck
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: readeck
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: ./kompose convert -f ./docker-compose.yml
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/readeck-default: "true"
+        io.kompose.service: readeck
+    spec:
+      containers:
+        - image: codeberg.org/readeck/readeck:latest
+          name: readeck
+          ports:
+            - containerPort: 8000
+          resources: {}
+          volumeMounts:
+            - mountPath: /readeck
+              name: readeck-claim0
+      restartPolicy: Always
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      volumes:
+        - name: readeck-claim0
+          persistentVolumeClaim:
+            claimName: readeck-claim0
