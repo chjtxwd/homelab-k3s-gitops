@@ -1,58 +1,41 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: bililive-tools-frontend
-  namespace: bililive-tools
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: bililive-tools-frontend
-  template:
-    metadata:
-      labels:
-        app: bililive-tools-frontend
-    spec:
-      containers:
-      - name: frontend
-        image: renmu1234/bililive-tools-frontend
-        ports:
-        - containerPort: 3000
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
----
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: bililive-tools-frontend-service
+  name: bililive-tools-caddy
   namespace: bililive-tools
-spec:
-  selector:
-    app: bililive-tools-frontend
-  ports:
-  - port: 3000
-    targetPort: 3000
-  type: ClusterIP
+data:
+  Caddyfile: |
+    :3000 {
+      handle_path /api* {
+        @videoNoRange {
+          path /common/video/*
+          not header Range *
+        }
+        request_header @videoNoRange Range "bytes=0-"
+        reverse_proxy localhost:18010
+      }
+      handle {
+        root * /app/public
+        file_server
+        encode gzip
+        try_files {path} /index.html
+      }
+    }
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bililive-tools-backend
+  name: bililive-tools
   namespace: bililive-tools
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bililive-tools-backend
+      app: bililive-tools
   template:
     metadata:
       labels:
-        app: bililive-tools-backend
+        app: bililive-tools
     spec:
       volumes:
       - name: data-volume
@@ -64,11 +47,15 @@ spec:
       - name: fonts-volume
         persistentVolumeClaim:
           claimName: fonts-pvc
+      - name: caddy-config
+        configMap:
+          name: bililive-tools-caddy
       containers:
-      - name: backend
-        image: renmu1234/bililive-tools-backend
+      - name: bililive-tools
+        image: renmu1234/bililive-tools:latest
+        imagePullPolicy: Always
         ports:
-        - containerPort: 18010
+        - containerPort: 3000
         env:
         - name: BILILIVE_TOOLS_PASSKEY
           value: "your_passkey"
@@ -83,6 +70,10 @@ spec:
           mountPath: /app/video
         - name: fonts-volume
           mountPath: /usr/local/share/fonts
+        - name: caddy-config
+          mountPath: /etc/caddy/Caddyfile
+          subPath: Caddyfile
+          readOnly: true
         resources:
           requests:
             memory: "256Mi"
@@ -90,6 +81,20 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bililive-tools-service
+  namespace: bililive-tools
+spec:
+  selector:
+    app: bililive-tools
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 32610
+  type: NodePort
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -126,16 +131,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: bililive-tools-backend-service
-  namespace: bililive-tools
-spec:
-  selector:
-    app: bililive-tools-backend
-  ports:
-  - port: 18010
-    targetPort: 18010
-  type: ClusterIP
